@@ -36,6 +36,9 @@
 #' @author Matt Tyers
 #' @seealso \link{NPetersen}, \link{vPetersen}, \link{sePetersen},
 #'   \link{rPetersen}, \link{pPetersen}, \link{powPetersen}
+#' @importFrom stats qnorm
+#' @importFrom stats rbinom
+#' @importFrom stats quantile
 #' @examples
 #' ciPetersen(n1=100, n2=100, m2=20)
 #' @export
@@ -93,6 +96,9 @@ ciPetersen <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000,useC
 #' @author Matt Tyers
 #' @seealso \link{NChapman}, \link{vChapman}, \link{seChapman},
 #'   \link{rChapman}, \link{pChapman}, \link{powChapman}
+#' @importFrom stats qnorm
+#' @importFrom stats rbinom
+#' @importFrom stats quantile
 #' @examples
 #' ciChapman(n1=100, n2=100, m2=20)
 #' @export
@@ -150,6 +156,9 @@ ciChapman <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000) {
 #' @author Matt Tyers
 #' @seealso \link{NBailey}, \link{vBailey}, \link{seBailey},
 #'   \link{rBailey}, \link{pBailey}, \link{powBailey}
+#' @importFrom stats qnorm
+#' @importFrom stats rbinom
+#' @importFrom stats quantile
 #' @examples
 #' ciBailey(n1=100, n2=100, m2=20)
 #' @export

@@ -23,6 +23,7 @@
 #' @author Matt Tyers
 #' @seealso \link{NChapman}, \link{vChapman}, \link{seChapman}, \link{pChapman},
 #'   \link{powChapman}, \link{ciChapman}
+#' @importFrom stats rhyper
 #' @examples
 #' draws <- rChapman(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
@@ -59,6 +60,7 @@ rChapman <- function(length,N,n1,n2) {
 #' @author Matt Tyers
 #' @seealso \link{NPetersen}, \link{vPetersen}, \link{sePetersen}, \link{pPetersen},
 #'   \link{powPetersen}, \link{ciPetersen}
+#' @importFrom stats rhyper
 #' @examples
 #' draws <- rPetersen(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
@@ -95,6 +97,7 @@ rPetersen <- function(length,N,n1,n2) {
 #' @author Matt Tyers
 #' @seealso \link{NBailey}, \link{vBailey}, \link{seBailey}, \link{pBailey},
 #'   \link{powBailey}, \link{ciBailey}
+#' @importFrom stats rbinom
 #' @examples
 #' draws <- rBailey(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
@@ -434,6 +437,8 @@ powPetersen <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less
 #' @examples
 #' draws <- rChapman(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
+#' @importFrom graphics plot
+#' @importFrom graphics lines
 #' @export
 plotdiscdensity <- function(x,xlab="value",ylab="density",...) {
   uniquevals <- sort(unique(x))

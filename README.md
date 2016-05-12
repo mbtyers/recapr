@@ -16,3 +16,7 @@ The 'riverdist' package is currently available on Github, and can be installed i
 `devtools::install_github("mbtyers/recapr")`
 
 ### Issues
+
+This package has no known issues.  
+
+[![Travis-CI Build Status](https://travis-ci.org/mbtyers/recapr.svg?branch=master)](https://travis-ci.org/mbtyers/recapr)
