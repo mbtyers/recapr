@@ -6,10 +6,23 @@ Tools are provided for estimating, testing, and simulating abundance in a two-ev
 
 ### Commonly-used functions
 
+* `NChapman()`, `NPetersen()`, and `NBailey()` calculate the values of Chapman, Petersen, or Bailey abundance estimates, given values of sample sizes and number of recaptures 
+
+* `vChapman()`, `vPetersen()`, and `vBailey()` calculate the estimated variance of Chapman, Petersen, or Bailey abundance estimates, given values of sample sizes and number of recaptures, and `seChapman()`, `sePetersen()`, and `seBailey()` give standard errors
+
+* `rChapman()`, `rPetersen()`, and `rBailey()` return vectors of random draws from the Chapman, Petersen, or Bailey abundance estimates, given values of true abundance and sample sizes
+
+* `pChapman()`, `pPetersen()`, and `pBailey()` use many random draws to calculate approximate p-values for hypothesis testing
+
+* `powChapman()`, `powPetersen()`, and `powBailey()` use simulation to calculate hypothesis testing power, given alternative abundance
+
+* `ciChapman()`, `ciPetersen()`, and `ciBailey()` calculate confidence intervals for abundance using bootstrapping and/or normal approximation
+
+* `plotdiscdensity()` produces an empirical pmf plot of a vector of discrete values, such as that returned from an abundance estimate simulation, that is more appropriate than a traditional kernel density plot and perhaps more illustrative than a histogram
 
 ### Installation
 
-The 'riverdist' package is currently available on Github, and can be installed in R with the following code:
+The 'recapr' package is currently available on Github, and can be installed in R with the following code:
 
 `install.packages("devtools",dependencies=T)`
 
