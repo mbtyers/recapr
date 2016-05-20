@@ -10,13 +10,13 @@ rBailey(length, N, n1, n2)
 \item{length}{The length of the random vector to return.}
 
 \item{N}{The value of the true abundance. This may be a single number or
-vector of values.}
+vector of values equal to \code{length}.}
 
 \item{n1}{Number of individuals captured and marked in the first sample. This
-may be a single number or vector of values.}
+may be a single number or vector of values equal to \code{length}.}
 
 \item{n2}{Number of individuals captured in the second sample.  This may be a
-single number or vector of values.}
+single number or vector of values equal to \code{length}.}
 }
 \value{
 A vector of random draws from the Bailey estimator

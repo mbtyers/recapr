@@ -117,6 +117,12 @@ ciChapman <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000) {
     Nhatboot <- NChapman(n1,n2,m2boot)
     out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=T))
   }
+  # m2 normal
+  # sem2 <- sqrt(n1*n2/out$Nhat*(1-(n1/out$Nhat))*((out$Nhat-n2)/(out$Nhat-1)))
+  # ci_m2 <- m2-qnorm(bounds)*sem2
+  # out$ci_m2Norm <- sort(n1*n2/ci_m2)
+  # asymptotic profile likelihood
+  # seber
   return(out)
 }
 
@@ -182,19 +188,37 @@ ciBailey <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000) {
 
 #ciPetersen(100,100,10)
 #
-# nsim <- 10000
+# nsim <- 1000
 # n1 <- 300
-# n2 <- 200
+# n2 <- 1000
 # m2 <- 50
-# N <- 1200
+# N <- 12000
 # m2draws <- rhyper(nsim,n1,N-n1,n2)
-# covnorm <- covboot <- NA
+# covnorm <- covnorm2 <- covboot <- less <- more <- less2 <- more2 <- NA
 # for(i in 1:nsim) {
-#   cis <- ciPetersen(n1,n2,m2draws[i],conf=.9,useChapvar = T)
+#   cis <- ciChapman(n1,n2,m2draws[i],conf=.95)
 #   covnorm[i] <- (cis$ciNorm[1] <= N) & (cis$ciNorm[2] >= N)
+#   covnorm2[i] <- (cis$ci_m2Norm[1] <= N) & (cis$ci_m2Norm[2] >= N)
 #   covboot[i] <- (cis$ciBoot[1] <= N) & (cis$ciBoot[2] >= N)
+#   less[i] <- N<cis$ciBoot[1]
+#   more[i] <- N>cis$ciBoot[2]
+#   less2[i] <- N<cis$ci_m2Norm[1]
+#   more2[i] <- N>cis$ci_m2Norm[2]
 # }
 # mean(covnorm)
+# mean(covnorm2)
 # mean(covboot)
+# mean(less)
+# mean(more)
+# mean(less2)
+# mean(more2)
 #
 # mean((rChapman(10000,N,n1,n2)))
+#
+# m2 <- 5
+# n1 <- 300
+# n2 <- 10
+# m2boot <- rbinom(10000,n2,m2/n2)
+# Nboot <- NChapman(n1,n2,m2boot)
+# plotdiscdensity(Nboot)
+# abline(v=quantile(Nboot,c(0.025,0.975)),lty=2)

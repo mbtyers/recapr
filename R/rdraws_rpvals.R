@@ -6,11 +6,11 @@
 #'   compute a vector of draws from the estimator.
 #' @param length The length of the random vector to return.
 #' @param N The value of the true abundance. This may be a single number or
-#'   vector of values.
+#'   vector of values equal to \code{length}.
 #' @param n1 Number of individuals captured and marked in the first sample. This
-#'   may be a single number or vector of values.
+#'   may be a single number or vector of values equal to \code{length}.
 #' @param n2 Number of individuals captured in the second sample.  This may be a
-#'   single number or vector of values.
+#'   single number or vector of values equal to \code{length}.
 #' @return A vector of random draws from the Chapman estimator
 #' @note Any Petersen-type estimator (such as this) depends on a set of
 #'   assumptions: \itemize{ \item  The population is closed; that is, that there
@@ -43,11 +43,11 @@ rChapman <- function(length,N,n1,n2) {
 #'   compute a vector of draws from the estimator.
 #' @param length The length of the random vector to return.
 #' @param N The value of the true abundance. This may be a single number or
-#'   vector of values.
+#'   vector of values equal to \code{length}.
 #' @param n1 Number of individuals captured and marked in the first sample. This
-#'   may be a single number or vector of values.
+#'   may be a single number or vector of values equal to \code{length}.
 #' @param n2 Number of individuals captured in the second sample.  This may be a
-#'   single number or vector of values.
+#'   single number or vector of values equal to \code{length}.
 #' @return A vector of random draws from the Petersen estimator
 #' @note Any Petersen-type estimator (such as this) depends on a set of
 #'   assumptions: \itemize{ \item  The population is closed; that is, that there
@@ -80,11 +80,11 @@ rPetersen <- function(length,N,n1,n2) {
 #'   compute a vector of draws from the estimator.
 #' @param length The length of the random vector to return.
 #' @param N The value of the true abundance. This may be a single number or
-#'   vector of values.
+#'   vector of values equal to \code{length}.
 #' @param n1 Number of individuals captured and marked in the first sample. This
-#'   may be a single number or vector of values.
+#'   may be a single number or vector of values equal to \code{length}.
 #' @param n2 Number of individuals captured in the second sample.  This may be a
-#'   single number or vector of values.
+#'   single number or vector of values equal to \code{length}.
 #' @return A vector of random draws from the Bailey estimator
 #' @note Any Petersen-type estimator (such as this) depends on a set of
 #'   assumptions: \itemize{ \item  The population is closed; that is, that there
@@ -112,7 +112,7 @@ rBailey <- function(length,N,n1,n2) {
 
 #' Hypothesis Testing Using the Bailey Estimator
 #' @description Approximates a p-value for a hypothesis test of the Bailey
-#'   estimator by means of many simulated draws from the null distribution.
+#'   estimator by means of many simulated draws from the null distribution, conditioned on sample sizes.
 #' @param estN The estimated abundance.  Either this or the number of recaptures
 #'   (\code{m2}) must be specified.
 #' @param nullN The abundance given by the null hypothesis
@@ -176,7 +176,7 @@ pBailey <- function(estN=NULL,nullN,n1,n2,m2=NULL,nsim=100000,alternative="less"
 
 #' Hypothesis Testing Using the Chapman Estimator
 #' @description Approximates a p-value for a hypothesis test of the Chapman
-#'   estimator by means of many simulated draws from the null distribution.
+#'   estimator by means of many simulated draws from the null distribution, conditioned on sample sizes.
 #' @param estN The estimated abundance.  Either this or the number of recaptures
 #'   (\code{m2}) must be specified.
 #' @param nullN The abundance given by the null hypothesis
@@ -240,7 +240,7 @@ pChapman <- function(estN=NULL,nullN,n1,n2,m2=NULL,nsim=100000,alternative="less
 
 #' Hypothesis Testing Using the Petersen Estimator
 #' @description Approximates a p-value for a hypothesis test of the Petersen
-#'   estimator by means of many simulated draws from the null distribution.
+#'   estimator by means of many simulated draws from the null distribution, conditioned on sample sizes.
 #' @param estN The estimated abundance.  Either this or the number of recaptures
 #'   (\code{m2}) must be specified.
 #' @param nullN The abundance given by the null hypothesis
@@ -304,7 +304,7 @@ pPetersen <- function(estN=NULL,nullN,n1,n2,m2=NULL,nsim=100000,alternative="les
 
 #' Power for Hypothesis Testing Using the Bailey Estimator
 #' @description Approximates the power of a hypothesis test of the Bailey
-#'   estimator by means of many simulated draws from a specified alternative distribution.
+#'   estimator by means of many simulated draws from a specified alternative distribution, conditioned on sample sizes.
 #' @param nullN The abundance given by the null hypothesis
 #' @param trueN The assumed abundance for the power calculation
 #' @param n1 Number of individuals captured and marked in the first sample
@@ -346,7 +346,7 @@ powBailey <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less")
 
 #' Power for Hypothesis Testing Using the Chapman Estimator
 #' @description Approximates the power of a hypothesis test of the Chapman
-#'   estimator by means of many simulated draws from a specified alternative distribution.
+#'   estimator by means of many simulated draws from a specified alternative distribution, conditioned on sample sizes.
 #' @param nullN The abundance given by the null hypothesis
 #' @param trueN The assumed abundance for the power calculation
 #' @param n1 Number of individuals captured and marked in the first sample
@@ -388,7 +388,7 @@ powChapman <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less"
 
 #' Power for Hypothesis Testing Using the Petersen Estimator
 #' @description Approximates the power of a hypothesis test of the Petersen
-#'   estimator by means of many simulated draws from a specified alternative distribution.
+#'   estimator by means of many simulated draws from a specified alternative distribution, conditioned on sample sizes.
 #' @param nullN The abundance given by the null hypothesis
 #' @param trueN The assumed abundance for the power calculation
 #' @param n1 Number of individuals captured and marked in the first sample

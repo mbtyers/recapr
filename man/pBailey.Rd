@@ -32,7 +32,7 @@ An approximate p-value for the specified hypothesis test.  If
 }
 \description{
 Approximates a p-value for a hypothesis test of the Bailey
-  estimator by means of many simulated draws from the null distribution.
+  estimator by means of many simulated draws from the null distribution, conditioned on sample sizes.
 }
 \note{
 Any Petersen-type estimator (such as this) depends on a set of

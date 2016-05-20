@@ -28,7 +28,7 @@ The approximate power of the specified hypothesis test, for the specified altern
 }
 \description{
 Approximates the power of a hypothesis test of the Bailey
-  estimator by means of many simulated draws from a specified alternative distribution.
+  estimator by means of many simulated draws from a specified alternative distribution, conditioned on sample sizes.
 }
 \note{
 Any Petersen-type estimator (such as this) depends on a set of
