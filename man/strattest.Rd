@@ -15,6 +15,21 @@ corresponding to one stratum.}
 
 \item{m2}{Vector of m2 counts (number of recaptures in the second event),
 each element corresponding to one stratum.}
+
+\item{...}{Additional arguments for \link[stats]{chisq.test}}
+}
+\value{
+A list of class \code{"recapr_strattest"} with the following components:
+\itemize{
+\item{\code{cap_table}} {The contingency table used for the first test}
+\item{\code{cap_Xsqd}} {The chi-squared test statistic in the first test}
+\item{\code{cap_df}} {The associated degrees of freedom in the first test}
+\item{\code{cap_pval}} {The p-value returned from the first test}
+\item{\code{recap_table}} {The contingency table used for the second test}
+\item{\code{recap_Xsqd}} {The chi-squared test statistic in the second test}
+\item{\code{recap_df}} {The associated degrees of freedom in the second test}
+\item{\code{recap_pval}} {The p-value returned from the second test}
+}
 }
 \description{
 Conducts two chi-squared tests for the consistency of the
@@ -44,7 +59,7 @@ Any Petersen-type estimator (such as this) depends on a set of
   reported in the second event }
 }
 \examples{
-strattest(n1=c(100,100), n2=c(20,200), m2=c(10,15))
+strattest(n1=c(100,100), n2=c(50,200), m2=c(20,15))
 }
 \author{
 Matt Tyers

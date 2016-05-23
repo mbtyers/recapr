@@ -17,7 +17,7 @@
 #'   the stratified estimator will be much less than an estimator calculated
 #'   without stratification.
 #' @author Matt Tyers
-#' @seealso \link{strattest}, \link{vstrat},  \link{sestrat}, \link{cistrat},
+#' @seealso \link{strattest}, \link{rstrat}, \link{vstrat},  \link{sestrat}, \link{cistrat},
 #'   \link{NChapman}, \link{NPetersen}, \link{NBailey}
 #' @examples
 #' Nstrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))
@@ -76,7 +76,7 @@ Nstrat <- function(n1,n2,m2,estimator="Chapman") {
 #' @note This function makes the naive assumption of independence between
 #'   strata.  Caution is therefore recommended.
 #' @author Matt Tyers
-#' @seealso \link{strattest}, \link{Nstrat},  \link{sestrat}, \link{cistrat},
+#' @seealso \link{strattest}, \link{Nstrat}, \link{rstrat},  \link{sestrat}, \link{cistrat},
 #'   \link{NChapman}, \link{NPetersen}, \link{NBailey}
 #' @examples
 #' vstrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))
@@ -120,7 +120,7 @@ vstrat <- function(n1,n2,m2,estimator="Chapman") {
 #' @note This function makes the naive assumption of independence between
 #'   strata.  Caution is therefore recommended.
 #' @author Matt Tyers
-#' @seealso \link{strattest}, \link{vstrat},  \link{sestrat}, \link{cistrat},
+#' @seealso \link{strattest}, \link{Nstrat}, \link{rstrat},  \link{vstrat}, \link{cistrat},
 #'   \link{NChapman}, \link{NPetersen}, \link{NBailey}
 #' @examples
 #' sestrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))
@@ -134,6 +134,52 @@ sestrat <- function(n1,n2,m2,estimator="Chapman") {
 
 #sestrat(n1=c(100,200),n2=c(100,500),m2=c(10,10))
 #sqrt(vChapman(100,100,10)+vChapman(200,500,10))
+
+
+#' Random Draws from the Stratified Estimator
+#' @description Returns a vector of random draws from the stratified estimator in a
+#'   mark-recapture experiment, given values of the true abundance and the
+#'   sample size in both events.  The function first simulates a vector of
+#'   recaptures (m2) for each stratum, and then uses these to
+#'   compute a vector of draws from the estimator.
+#'
+#'   It may prove useful to investigate the behavior of the stratified estimator under relevant scenarios.
+#' @param length The length of the random vector to return.
+#' @param N A vector of values of the true abundance for each stratum.
+#' @param n1 A vector of the number of individuals captured and marked in the first sample, for each stratum.
+#' @param n2 A vector of the number of individuals captured in the second sample, for each stratum.
+#' @param estimator The type of estimator to use.  Allowed values are
+#'   \code{"Chapman"}, \code{"Petersen"}, and \code{"Bailey"}.  Default to
+#'   \code{"Chapman"}.
+#' @return A vector of random draws from the stratified estimator
+#' @author Matt Tyers
+#' @seealso \link{strattest}, \link{Nstrat},  \link{vstrat}, \link{cistrat},\link{NChapman}, \link{NPetersen}, \link{NBailey}
+#' @importFrom stats rhyper
+#' @examples
+#' draws <- rstrat(length=100000, N=c(5000,10000), n1=c(500,200), n2=c(500,200))
+#' plotdiscdensity(draws)  #plots the density of a vector of discrete values
+#' mean(draws)
+#' @export
+rstrat <- function(length,N,n1,n2,estimator="Chapman") {
+  if(!(length(n1)==length(n2)) | !(length(n1)==length(N))) stop("n1, n2, and m2 vectors must be of equal length")
+  if(!estimator %in% c("Chapman","Bailey","Petersen")) stop("invalid estimator")
+  Nhat <- 0
+  for(i in 1:length(N)) {
+    if(estimator=="Chapman") {
+      m2 <- rhyper(length, n1[i], N[i]-n1[i], n2[i])
+      Nhat <- Nhat + NChapman(n1=n1[i], n2=n2[i], m2=m2)
+    }
+    if(estimator=="Petersen") {
+      m2 <- rhyper(length, n1[i], N[i]-n1[i], n2[i])
+      Nhat <- Nhat + NPetersen(n1=n1[i], n2=n2[i], m2=m2)
+    }
+    if(estimator=="Bailey") {
+      m2 <- rbinom(length, n2[i], n1[i]/N[i])
+      Nhat <- Nhat + NBailey(n1=n1[i], n2=n2[i], m2=m2)
+    }
+  }
+  return(Nhat)
+}
 
 
 # ---------MAYBE REVISIT THIS THOUGHT ----
@@ -183,7 +229,7 @@ sestrat <- function(n1,n2,m2,estimator="Chapman") {
 #'   The user therefore cautioned, and is encouraged to investigate the coverage
 #'   under relevant scenarios.
 #' @author Matt Tyers
-#' @seealso \\link{strattest}, \link{Nstrat},  \link{vstrat}, \link{sestrat},
+#' @seealso \\link{strattest}, \link{Nstrat}, \link{rstrat},  \link{vstrat}, \link{sestrat},
 #'   \link{NChapman}, \link{NPetersen}, \link{NBailey}
 #' @importFrom stats qnorm
 #' @importFrom stats rbinom

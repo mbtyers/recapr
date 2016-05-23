@@ -8,3 +8,4 @@ Description: Tools are provided for estimating, testing, and simulating abundanc
 License: GPL-2
 LazyData: TRUE
 Imports: MASS
+Suggests: testthat

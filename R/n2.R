@@ -9,7 +9,7 @@
 #' @param N The best guess at true abundance
 #' @param n1 The size of the first (or second) sampling event
 #' @param conf A vector of the desired levels of confidence to investigate.
-#'   Allowed values are any of \code{c(0.99,0.95,0.85,0.8,0.75)}.  Defaults to
+#'   Allowed values are any of \code{c(0.99,0.95,0.9,0.85,0.8,0.75)}.  Defaults to
 #'   all of \code{c(0.99,0.95,0.85,0.8,0.75)}.
 #' @param acc A vector of the desired levels of relative accuracy to
 #'   investigate.  Allowed values are any of
@@ -35,10 +35,10 @@
 #' @examples
 #' n2RR(N=1000, n1=100)
 #' @export
-n2RR <- function(N, n1, conf=c(0.99,0.95,0.85,0.8,0.75),acc=c(0.5,0.25,0.2,0.15,0.1,0.05,0.01)) {
+n2RR <- function(N, n1, conf=c(0.99,0.95,0.9,0.85,0.8,0.75),acc=c(0.5,0.25,0.2,0.15,0.1,0.05,0.01)) {
   out <- list()
   accall <- c(0.5,0.25,0.2,0.15,0.1,0.05,0.01)
-  conf <- conf[conf %in% c(0.99,0.95,0.85,0.8,0.75)]
+  conf <- conf[conf %in% c(0.99,0.95,0.9,0.85,0.8,0.75)]
   acc <- acc[acc %in% accall]
   if(length(acc)==0) stop("invalid acc")
   if(length(conf)==0) stop("invalid conf")
@@ -108,6 +108,7 @@ plotn2sim <- function(N, n1, conf=c(0.99,0.95,0.85,0.8,0.75),n2range=NULL,n2step
   if(is.null(n2range)) n2range <- c(0,2*as.numeric(n2RR(N=N,n1=n1,conf=.95,acc=.1)[[1]])[3])
   if(is.null(n2step)) n2step <- max(1,floor((n2range[2]-n2range[1])/200))
   whichn2 <- seq(n2range[1],n2range[2],by=n2step)
+  if(sum(conf %in% c(0.99,0.95,0.85,0.8,0.75)) < 1) stop("invalid conf")
   conftry <- sort(conf[conf %in% c(0.99,0.95,0.85,0.8,0.75)],decreasing=T)
   accsimcalc <- matrix(NA,nrow=length(whichn2),ncol=(2*length(conftry)+1))
   accsimcalc[,1] <- whichn2

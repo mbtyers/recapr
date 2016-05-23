@@ -41,7 +41,7 @@ Nstrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))
 Matt Tyers
 }
 \seealso{
-\link{strattest}, \link{vstrat},  \link{sestrat}, \link{cistrat},
+\link{strattest}, \link{rstrat}, \link{vstrat},  \link{sestrat}, \link{cistrat},
   \link{NChapman}, \link{NPetersen}, \link{NBailey}
 }
 

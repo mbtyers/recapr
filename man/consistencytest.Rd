@@ -5,7 +5,7 @@
 \title{Consistency Tests for the Abundance Estimator}
 \usage{
 consistencytest(n1counts, n2counts, m2strata1 = NULL, m2strata2 = NULL,
-  stratamat = NULL)
+  stratamat = NULL, ...)
 }
 \arguments{
 \item{n1counts}{A vector of the total sample sizes in the first event, by
@@ -28,6 +28,25 @@ be used together with \code{m2strata1} instead of \code{stratamat}.}
 combination of event 1 and event 2 strata, with rows corresponding to event
 1 strata and columns corresponding to event 2 strata.  May be used instead
 of \code{m2strata1} and \code{m2strata2}.}
+
+\item{...}{Additional arguments for \link[stats]{chisq.test}}
+}
+\value{
+A list of class \code{"recapr_consistencytest"} with the following components:
+\itemize{
+\item{\code{test1_tab}} {The contingency table used for the first test}
+\item{\code{test1_Xsqd}} {The chi-squared test statistic in the first test}
+\item{\code{test1_df}} {The associated degrees of freedom in the first test}
+\item{\code{test1_pval}} {The p-value returned from the first test}
+\item{\code{test2_tab}} {The contingency table used for the second test}
+\item{\code{test2_Xsqd}} {The chi-squared test statistic in the second test}
+\item{\code{test2_df}} {The associated degrees of freedom in the second test}
+\item{\code{test2_pval}} {The p-value returned from the second test}
+\item{\code{test3_tab}} {The contingency table used for the third test}
+\item{\code{test3_Xsqd}} {The chi-squared test statistic in the third test}
+\item{\code{test3_df}} {The associated degrees of freedom in the third test}
+\item{\code{test3_pval}} {The p-value returned from the third test}
+}
 }
 \description{
 Conducts three chi-squared tests for the consistency of the
@@ -62,10 +81,11 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 consistencytest(n1counts=c(15,12,6), n2counts=c(12,9,10,8),
    m2strata1=c(1,1,1,1,1,2,2,2,3,3),
-   m2strata2=c(1,1,3,3,4,1,2,4,1,3))
+   m2strata2=c(1,1,3,3,4,1,2,4,1,3),
+   simulate.p.value=TRUE)
 
-mat <- matrix(c(2,0,2,1,1,1,0,1,1,0,1,0), nrow=3, ncol=4, byrow=TRUE)
-consistencytest(n1counts=c(15,12,6), n2counts=c(12,9,10,8), stratamat=mat)
+mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
+consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), stratamat=mat)
 }
 \author{
 Matt Tyers

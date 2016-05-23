@@ -34,6 +34,8 @@ NDarroch <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, stratam
   }
   if(is.null(stratamat)) {
     if(is.null(m2strata1) | is.null(m2strata2)) stop("recapture strata must be specified, either with stratamat or m2strata1 and m2strata2 together")
+    if(any(!is.numeric(m2strata1))) stop("m2strata1 values must be positive integers")
+    if(any(!is.numeric(m2strata2))) stop("m2strata2 values must be positive integers")
     if(sum(m2strata1-round(m2strata1))!=0) stop("m2strata1 values must be positive integers")
     if(sum(m2strata2-round(m2strata2))!=0) stop("m2strata2 values must be positive integers")
     if(any(m2strata1<1)) stop("m2strata1 values must be positive integers")
