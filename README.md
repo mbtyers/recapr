@@ -32,7 +32,7 @@ Tools are provided for estimating, testing, and simulating abundance in a two-ev
 
 The 'recapr' package is currently available on Github, and can be installed in R with the following code:
 
-`install.packages("devtools",dependencies=T)`
+`library(devtools)`
 
 `devtools::install_github("mbtyers/recapr")`
 

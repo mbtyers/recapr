@@ -107,6 +107,7 @@ n2RR <- function(N, n1, conf=c(0.99,0.95,0.9,0.85,0.8,0.75),acc=c(0.5,0.25,0.2,0
 plotn2sim <- function(N, n1, conf=c(0.99,0.95,0.85,0.8,0.75),n2range=NULL,n2step=NULL,estimator="Chapman",nsim=10000,accrange=1,...) {
   if(is.null(n2range)) n2range <- c(0,2*as.numeric(n2RR(N=N,n1=n1,conf=.95,acc=.1)[[1]])[3])
   if(is.null(n2step)) n2step <- max(1,floor((n2range[2]-n2range[1])/200))
+  if(length(n2range)!=2) stop("n2range must have two elements (min and max n2 to plot)")
   whichn2 <- seq(n2range[1],n2range[2],by=n2step)
   if(sum(conf %in% c(0.99,0.95,0.85,0.8,0.75)) < 1) stop("invalid conf")
   conftry <- sort(conf[conf %in% c(0.99,0.95,0.85,0.8,0.75)],decreasing=T)
@@ -185,6 +186,7 @@ plotn2sim <- function(N, n1, conf=c(0.99,0.95,0.85,0.8,0.75),n2range=NULL,n2step
 #' @export
 plotn1n2simmatrix <- function(N,conf=0.95,nrange=NULL,nstep=NULL,estimator="Chapman",nsim=10000,...) {
   if(is.null(nrange)) nrange <- c(0,2*as.numeric(n2RR(N=N,n1=100,conf=conf,acc=.1)[[1]])[3])
+  if(length(nrange)!=2) stop("nrange must have two elements (min and max n2 to plot)")
   if(is.null(nstep)) nstep <- max(1,floor((nrange[2]-nrange[1])/50))
   n1 <- n2 <- seq(from=nrange[1],to=nrange[2],by=nstep)
   simacc <- matrix(NA,nrow=length(n1),ncol=length(n2))
