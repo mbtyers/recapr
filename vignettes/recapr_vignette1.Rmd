@@ -51,7 +51,7 @@ seChapman(n1=100, n2=150, m2=20)   # standard error
 
 ## Confidence Intervals 
 
-Confidence intervals can be generated for the Chapman, Petersen, or Bailey estimators using `ciChapman()`, `ciPetersen()`, or `ciBailey()`.  A point estimate is returned as well as two confidence intervals, one using a Walt-type Normal-distribution assumption, and the other calculated by means of bootstrapping.  The bootstrapping interval is likely to have much more appropriate coverage than the Normal interval.
+Confidence intervals can be generated for the Chapman, Petersen, or Bailey estimators using `ciChapman()`, `ciPetersen()`, or `ciBailey()`.  A point estimate is returned as well as two confidence intervals, one using a Wald-type Normal-distribution assumption, and the other calculated by means of bootstrapping.  The bootstrapping interval is likely to have more appropriate bounds than the Normal interval, and has demonstrated better coverage in testing.
 
 ```{r}
 ciChapman(n1=100, n2=150, m2=20)
@@ -83,8 +83,8 @@ output <- pChapman(nullN=500, n1=100, n2=100, m2=28, alternative="less")
 output
 
 plotdiscdensity(rChapman(length=100000, N=500, n1=100, n2=100))   # null distribution
-abline(v=500, lwd=2, lty=2)              # Null hypothesis abundance plots as a dashed line
-abline(v=output$estN, lwd=2, col=2)      # Observed (estimated) abundance plots as a red line
+abline(v=500, lwd=2, lty=2)              # Null hypothesis abundance plotted as a dashed line
+abline(v=output$estN, lwd=2, col=2)      # Observed (estimated) abundance plotted as a red line
 ```
 
 Power calculation are also done using random draws from an assumed true (alternative) distribution, given the sample sizes of both events.  In `powChapman()`, `powPetersen()`, or `powBailey()`, argument `nullN` specifies the abundance used by the null hypothesis and `trueN` specifies the assumed true abundance used for the power calculation.  The `n1`, and `n2` arguments give the sample sizes and `alternative` gives the direction of the alternative hypothesis, with `alpha` specifying the level of the test to use. 
@@ -104,7 +104,7 @@ plot(Ntotry, pows)
 
 ## Sample Size Recommendation
 
-Given the value of the sample size of one event and a best-guess at the true abundance, a recommendation for the sample size in the other sampling event can be calculated from the desired confidence and relative accuracy with the methods of Robson & Regier using `n2RR()`.  Recommendations for sample size are provided for two scenarios: if the size of the other sample is as specified, and if the two sample sizes are equal, which is the most efficient for sampling. The example below gives the full output for all allowed values of confidence and relative accuracy.  Output can be simplified by providing values in the `conf` and `acc` arguments.
+Given the value of the sample size of one event and a best-guess at the true abundance, a recommendation for the sample size in the other sampling event can be calculated from the desired confidence and relative accuracy with the methods of Robson & Regier using `n2RR()`.  Recommendations for sample size are provided for two scenarios: if the size of the other sample is as specified, and if the two sample sizes are equal, which is the most efficient for sampling. The example below gives the full output for all allowed values of confidence and relative accuracy.
 
 ```{r}
 n2RR(N=1000, n1=100)
@@ -116,7 +116,7 @@ Output can be simplified by providing values in the `conf` and `acc` arguments.
 n2RR(N=1000, n1=100, conf=c(0.9,0.95), acc=c(0.15,0.1,0.05))
 ```
 
-Simulation is used in `plotn2sim()`, in which the relative accuracy is calculated for a range of sample size values for the second event, for given levels of confidence.  The values to plot for n2 can be set by `n2range` and `n2step`, giving the range endpoints and step size, respectively.
+Simulation is used in `plotn2sim()`, in which the relative accuracy is calculated through simulation, for a range of sample size values for the second event, and given levels of confidence.  The values to plot for n2 can be set by `n2range` and `n2step`, giving the range endpoints and step size, respectively.
 
 ```{r,fig.width=7, fig.height=6}
 plotn2sim(N=1000, n1=100)
@@ -132,9 +132,9 @@ plotn1n2simmatrix(N=1000, nsim=2000)
 
 ## Tests of Consistency for the Estimator
 
-For a simple Petersen-type estimator of abundance to be consistent, one of three conditions must be true: either there must be complete mixing in the time between events, or the probability of capture must be equal for all individuals in the first event, or the probability of capture must be equal for all individuals in the second event.  This is typically investigated by means of a set of $\chi^2$ tests for each condition, with failure to reject the null hypothesis of any of the tests indicating that a simple Petersen-type estimator is reasonable to use.  Otherwise, if the null hypotheses are rejected in all tests, a completely stratified or partially stratified (Darroch-type) estimator should be used.
+For a simple Petersen-type estimator of abundance to be consistent, one of three conditions must be true: either there must be complete mixing in the time between events, or the probability of capture must be equal for all individuals in the first event, or the probability of capture must be equal for all individuals in the second event.  This is typically investigated by means of a set of $\chi^2$ tests for each condition, with failure to reject the null hypothesis of any of the tests indicating that a simple Petersen-type estimator is reasonable to use.  If the null hypotheses are rejected in all tests, a completely stratified or partially stratified (Darroch-type) estimator should be used.
 
-The `consistencytest()` function is provided, in the instance that sampling in both events is spatially or temporally stratified, in such a way that movement between strata may occur.  Event 1 and 2 strata do not need to be the same.  Arguments `n1counts` and `n2counts` accept vectors of sample sizes in each event by strata.  Recaptures of marked individuals can be specified in one of two ways: either as vectors of strata membership in `m2strata1` and `m2strata2`, or as a matrix in `stratamat`.  Arguments `m2strata1` and `m2strata2` accept vectors of the first- and second-event stratum membership for each recaptured individual, with only entries of `1, 2, 3, ...` accepted.  Alternatively, `stratamat` accepts a matrix in which each cell represents the number of recaptures for each combination of event 1 and event 2 strata, with rows corresponding to event 1 strata and columns corresponding to event 2 strata.
+The `consistencytest()` function is provided for the instance that sampling in both events is stratified in such a way that movement between strata may occur, such as spatially or temporally.  Event 1 and 2 strata do not need to be the same.  Arguments `n1counts` and `n2counts` accept vectors of sample sizes in each event by strata.  Recaptures of marked individuals can be specified in one of two ways: either as vectors of strata membership in `m2strata1` and `m2strata2`, or as a matrix in `stratamat`.  Arguments `m2strata1` and `m2strata2` accept vectors of the first- and second-event stratum membership for each recaptured individual, with only entries of `1, 2, 3, ...` accepted.  Alternatively, `stratamat` accepts a matrix in which each cell represents the number of recaptures for each combination of event 1 and event 2 strata, with rows corresponding to event 1 strata and columns corresponding to event 2 strata.
 
 In the example below, there were two strata in event 1 (with sample sizes of 284 and 199) and three strata in event 2, and 30 individuals were marked in stratum 1 of event 1 and were recaptured in stratum 1 of event 2. These tests yield strong evidence of incomplete mixing in the time between events and of unequal capture probabilities in the first event, but also no evidence of unequal capture probabilities in the second event.  Therefore, use of a simple Petersen-type estimator may be considered justified.
 
@@ -155,7 +155,7 @@ strattest(n1=c(100,100), n2=c(50,200), m2=c(20,15))
 
 ## Partially and Completely Stratified Estimators
 
-If sampling is stratified in both sampling events and some movement exists between strata but mixing is incomplete in the time between events and capture probabilities are unequal in both events, a partially stratified (Darroch-type) estimator must be used.  The `NDarroch()` function provides a means for doing this, and argument usage is the same as that in `consistencytest()`.
+If sampling is stratified in both sampling events and some movement exists between strata but mixing is incomplete in the time between events and capture probabilities are unequal in both events, a partially stratified (Darroch-type) estimator should be used.  The `NDarroch()` function provides a means for doing this, and argument usage is the same as that in `consistencytest()`.
 
 The function returns abundance estimates and standard errors for each stratum in both sampling events, as well as an overall abundance estimate and standard error.
 
@@ -164,7 +164,7 @@ mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)
 NDarroch(n1counts=c(484,1468,399), n2counts=c(847,6616,2489), stratamat=mat)
 ```
 
-If no movement can occur between strata, a completely stratified estimator may be used.  Functions `Nstrat()`, `vstrat()`, `sestrat()`, and `cistrat()`, are provided to compute abundance estimates, estimated variance, standard error, and confidence intervals,, and random draws for simulation.  In all cases, `n1`, `n2`, and `m2` accept vectors of first- and second-event sample sizes and recapture numbers by strata, and the additional `estimator` accepts the type of Petersen-type estimator to use: either `"Chapman"`, `"Petersen"`, or `"Bailey"`.  Additionally, `rstrat()` generates random draws from given vectors of `N`, `n1`, and `n2`.
+If no movement can occur between strata, a completely stratified estimator can be used.  Functions `Nstrat()`, `vstrat()`, `sestrat()`, and `cistrat()`, are provided to compute abundance estimates, estimated variance, standard error, and confidence intervals.  In all cases, `n1`, `n2`, and `m2` accept vectors of first- and second-event sample sizes and recapture numbers by strata, and the additional `estimator` accepts the type of Petersen-type estimator to use: either `"Chapman"`, `"Petersen"`, or `"Bailey"`.  Additionally, `rstrat()` generates random draws from given vectors of `N`, `n1`, and `n2`.
 
 ```{r,fig.width=7, fig.height=5}
 Nstrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))
