@@ -32,10 +32,6 @@ A list of minimum sample sizes.  Each list element corresponds to a
 Calculates minimum sample size for one sampling event in a
   Petersen mark-recapture experiment, given the sample size in the other
   event and an best guess at true abundance.
-
-  Robson, D. S., and H. A. Regier.  1964.  Sample size in Petersen
-  mark-recapture experiments.  Transactions of the American FisheriesSociety
-  93:215-226.
 }
 \note{
 Any Petersen-type estimator (such as this) depends on a set of
@@ -54,6 +50,11 @@ n2RR(N=1000, n1=100)
 }
 \author{
 Matt Tyers
+}
+\references{
+Robson, D. S., and H. A. Regier.  1964.  Sample size in Petersen
+  mark-recapture experiments.  Transactions of the American FisheriesSociety
+  93:215-226.
 }
 \seealso{
 \link{plotn2sim}, \link{plotn1n2simmatrix}

@@ -2,6 +2,8 @@
 #' @description Computes abundance estimates and associated variance in the event of spatial or temporal stratification, or in any stratification in which individuals can move between strata.  Marking (event 1) and recapture (event 2) strata do not need to be the same.
 #'
 #' Inputs are vectors of total event 1 and 2 sample sizes, and either vectors of event 1 and 2 strata corresponding to each recaptured individual, or a matrix of total number of recaptures for each combination of event 1 and event 2 strata.
+#'
+#' @references Darroch, J.N. (1961). The two-sample capture-recapture census when tagging and sampling are stratified.  \emph{Biometrika} \strong{48}, 241-60.
 #' @return A numeric list, giving the strata matrix if originally given in vector form, abundance estimates and standard errors by event 1 and event 2 strata, and the total abundance estimate and standard error.
 #' @param n1counts A vector of the total sample sizes in the first event, by
 #'   strata.  For example, setting \code{n1counts=c(20,30,40)} would imply 20

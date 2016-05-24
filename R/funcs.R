@@ -20,6 +20,7 @@
 #'   \item Individuals do not lose marks between events \item All marks will be
 #'   reported in the second event }
 #' @author Matt Tyers
+#' @references Chapman, D.G. (1951). Some properties of the hypergeometric distribution with applications to zoological censuses.  \emph{Univ. Calif. Public. Stat.} \strong{1}, 131-60.
 #' @seealso \link{NPetersen}, \link{NBailey}, \link{vChapman}, \link{seChapman}, \link{rChapman}, \link{pChapman},
 #'   \link{powChapman}, \link{ciChapman}
 #' @examples
@@ -81,6 +82,8 @@ NPetersen <- function(n1, n2, m2) (n1)*(n2)/(m2)
 #'   \item Individuals do not lose marks between events \item All marks will be
 #'   reported in the second event }
 #' @author Matt Tyers
+#' @references Bailey, N.T.J. (1951). On estimating the size of mobile populations from capture-recapture data.  \emph{Biometrika} \strong{38}, 293-306.
+#' @references Bailey, N.T.J. (1952). Improvements in the interpretation of recapture data.  \emph{J. Animal Ecol.} \strong{21}, 120-7.
 #' @seealso \link{NPetersen}, \link{NChapman}, \link{vBailey}, \link{seBailey}, \link{rBailey}, \link{pBailey},
 #'   \link{powBailey}, \link{ciBailey}
 #' @examples

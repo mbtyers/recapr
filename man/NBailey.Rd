@@ -42,6 +42,11 @@ NBailey(n1=100, n2=100, m2=20)
 \author{
 Matt Tyers
 }
+\references{
+Bailey, N.T.J. (1951). On estimating the size of mobile populations from capture-recapture data.  \emph{Biometrika} \strong{38}, 293-306.
+
+Bailey, N.T.J. (1952). Improvements in the interpretation of recapture data.  \emph{J. Animal Ecol.} \strong{21}, 120-7.
+}
 \seealso{
 \link{NPetersen}, \link{NChapman}, \link{vBailey}, \link{seBailey}, \link{rBailey}, \link{pBailey},
   \link{powBailey}, \link{ciBailey}

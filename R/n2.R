@@ -2,10 +2,6 @@
 #' @description Calculates minimum sample size for one sampling event in a
 #'   Petersen mark-recapture experiment, given the sample size in the other
 #'   event and an best guess at true abundance.
-#'
-#'   Robson, D. S., and H. A. Regier.  1964.  Sample size in Petersen
-#'   mark-recapture experiments.  Transactions of the American FisheriesSociety
-#'   93:215-226.
 #' @param N The best guess at true abundance
 #' @param n1 The size of the first (or second) sampling event
 #' @param conf A vector of the desired levels of confidence to investigate.
@@ -29,6 +25,9 @@
 #'   \item Individuals do not lose marks between events \item All marks will be
 #'   reported in the second event }
 #' @note It is possible that the sample size - accuracy relationship will be better illustrated using \link{plotn2sim}.
+#' @references Robson, D. S., and H. A. Regier.  1964.  Sample size in Petersen
+#'   mark-recapture experiments.  Transactions of the American FisheriesSociety
+#'   93:215-226.
 #' @author Matt Tyers
 #' @seealso \link{plotn2sim}, \link{plotn1n2simmatrix}
 #' @importFrom stats rhyper
