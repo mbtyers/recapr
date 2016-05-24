@@ -9,5 +9,5 @@ License: GPL-2
 LazyData: TRUE
 Imports: MASS
 Suggests: testthat,
-    knitr
+    knitr, rmarkdown
 VignetteBuilder: knitr
