@@ -26,7 +26,10 @@ test_that("rdraws_pvals",{
   expect_equal(mean(draws2), 517.7152, tolerance=1)
   expect_equal(mean(draws3), 500.371, tolerance=1)
 
-  # should probably do something with lengths
+  expect_error(rChapman(length=10, N=100, n1=1:10, n2=1:4), "n2 must be a single number, or a vector of length equal to the number of draws")
+  expect_error(rChapman(length=10, N=100, n1=10), "need to supply either n2 or p2")
+  expect_warning(rChapman(length=10, N=100, n1=10, n2=5, p2=.5), "both n2 and p2 specified - only n2 used")
+  expect_equal(mean(rChapman(length=100000, N=100, n1=10, n2=5, p2=.5)), 50.38573, tolerance=10)
 
   expect_equal(length(out1),2,tolerance=0.001)
   expect_equal(length(out2),2,tolerance=0.001)
@@ -126,6 +129,10 @@ test_that("stratified",{
   expect_equal(sum(ci$Nhat_by_strat), 10080, tolerance=0.1)
   expect_equal(sum(ci$ciNorm_strat), 20160, tolerance=0.1)
   expect_equal(sum(ci$ciBoot_strat), 27573.12, tolerance=10)
+
+  expect_error(rstrat(length=10, N=c(1000,1000), p1=c(.1,.2), p2=.3), "p1, p2, and N vectors must be of equal length")
+  expect_error(rstrat(length=10, N=c(1000,1000), p1=c(.1,.2), n2=3), "p1, n2, and N vectors must be of equal length")
+  expect_error(rstrat(length=10, N=c(1000,1000), p1=c(.1,.2)), "either n2 or p2 vectors must be specified")
 })
 
 mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)

@@ -4,7 +4,7 @@
 \alias{rPetersen}
 \title{Random Draws from the Petersen Estimator}
 \usage{
-rPetersen(length, N, n1, n2)
+rPetersen(length, N, n1 = NULL, n2 = NULL, p1 = NULL, p2 = NULL)
 }
 \arguments{
 \item{length}{The length of the random vector to return.}
@@ -17,6 +17,12 @@ may be a single number or vector of values equal to \code{length}.}
 
 \item{n2}{Number of individuals captured in the second sample.  This may be a
 single number or vector of values equal to \code{length}.}
+
+\item{p1}{Alternately, probability of capture in the first sample. This
+may be a single number or vector of values equal to \code{length}.}
+
+\item{p2}{Alternately, probability of capture in the second sample.  This may be a
+single number or vector of values equal to \code{length}.}
 }
 \value{
 A vector of random draws from the Petersen estimator
@@ -27,6 +33,8 @@ Returns a vector of random draws from the Petersen estimator in a
   sample size in both events.  The function first simulates a vector of
   recaptures (m2) from a hypergeometric distribution, and then uses these to
   compute a vector of draws from the estimator.
+
+If capture probabilities (\code{p1} and/or \code{p2}) are specified instead of sample size(s), the sample size(s) will first be drawn from a binomial distribution, then the number of recaptures.  If both sample size and capture probability are specified for a given sampling event, only the sample size will be used.
 }
 \note{
 Any Petersen-type estimator (such as this) depends on a set of

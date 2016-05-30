@@ -12,8 +12,8 @@ Tools are provided for estimating, testing, and simulating abundance in a two-ev
 \tabular{ll}{
 Package: \tab recapr\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
-Date: \tab 2016-05-10\cr
+Version: \tab 0.2\cr
+Date: \tab 2016-05-30\cr
 License: \tab GPL-2\cr
 }
 }

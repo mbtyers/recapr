@@ -144,10 +144,14 @@ sestrat <- function(n1,n2,m2,estimator="Chapman") {
 #'   compute a vector of draws from the estimator.
 #'
 #'   It may prove useful to investigate the behavior of the stratified estimator under relevant scenarios.
+#'
+#' If capture probabilities (\code{p1} and/or \code{p2}) are specified instead of sample size(s), the sample size(s) will first be drawn from a binomial distribution, then the number of recaptures.  If both sample size and capture probability are specified for a given sampling event, only the sample size will be used.
 #' @param length The length of the random vector to return.
 #' @param N A vector of values of the true abundance for each stratum.
 #' @param n1 A vector of the number of individuals captured and marked in the first sample, for each stratum.
 #' @param n2 A vector of the number of individuals captured in the second sample, for each stratum.
+#' @param p1 Alternately, a vector of probabilities of capture for the first event, for each stratum.
+#' @param p2 Alternately, a vector of probabilities of capture for the second event, for each stratum.
 #' @param estimator The type of estimator to use.  Allowed values are
 #'   \code{"Chapman"}, \code{"Petersen"}, and \code{"Bailey"}.  Default to
 #'   \code{"Chapman"}.
@@ -160,43 +164,76 @@ sestrat <- function(n1,n2,m2,estimator="Chapman") {
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
 #' mean(draws)
 #' @export
-rstrat <- function(length,N,n1,n2,estimator="Chapman") {
-  if(!(length(n1)==length(n2)) | !(length(n1)==length(N))) stop("n1, n2, and m2 vectors must be of equal length")
+rstrat <- function(length,N,n1=NULL,n2=NULL,p1=NULL,p2=NULL,estimator="Chapman") {
+  if(!is.null(n1) & !is.null(p1)) warning("both n1 and p1 specified - only n1 used")
+  if(!is.null(n2) & !is.null(p2)) warning("both n2 and p2 specified - only n2 used")
+  if(!is.null(n1) & !is.null(n2)) {
+    if(!(length(n1)==length(n2)) | !(length(n1)==length(N))) stop("n1, n2, and N vectors must be of equal length")
+  }
   if(!estimator %in% c("Chapman","Bailey","Petersen")) stop("invalid estimator")
   Nhat <- 0
   for(i in 1:length(N)) {
+    if(!is.null(n1)) n1fill <- n1[i]
+    if(!is.null(n2)) n2fill <- n2[i]
+    if(is.null(n1) & is.null(n2)) {
+      if(is.null(p1)) stop("either n1 or p1 vectors must be specified")
+      if(is.null(p2)) stop("either n2 or p2 vectors must be specified")
+    }
+    if(is.null(n1)) {
+      if(is.null(p1)) stop("either n1 or p1 vectors must be specified")
+      if(!is.null(n2)) {
+        if(!(length(p1)==length(n2)) | !(length(p1)==length(N))) stop("p1, n2, and N vectors must be of equal length")
+      }
+      if(is.null(n2)) {
+        if(!(length(p1)==length(p2)) | !(length(p1)==length(N))) stop("p1, p2, and N vectors must be of equal length")
+      }
+      n1fill <- rbinom(length,size=N[i],prob=p1[i])
+    }
+    if(is.null(n2)) {
+      if(is.null(p2)) stop("either n2 or p2 vectors must be specified")
+      if(!is.null(n1)) {
+        if(!(length(p2)==length(n1)) | !(length(p2)==length(N))) stop("p2, n1, and N vectors must be of equal length")
+      }
+      if(is.null(n1)) {
+        if(!(length(p2)==length(p1)) | !(length(p2)==length(N))) stop("p1, p2, and N vectors must be of equal length")
+      }
+      n2fill <- rbinom(length,size=N[i],prob=p2[i])
+    }
     if(estimator=="Chapman") {
-      m2 <- rhyper(length, n1[i], N[i]-n1[i], n2[i])
-      Nhat <- Nhat + NChapman(n1=n1[i], n2=n2[i], m2=m2)
+      m2 <- rhyper(length, n1fill, N[i]-n1fill, n2fill)
+      Nhat <- Nhat + NChapman(n1=n1fill, n2=n2fill, m2=m2)
     }
     if(estimator=="Petersen") {
-      m2 <- rhyper(length, n1[i], N[i]-n1[i], n2[i])
-      Nhat <- Nhat + NPetersen(n1=n1[i], n2=n2[i], m2=m2)
+      m2 <- rhyper(length, n1fill, N[i]-n1fill, n2fill)
+      Nhat <- Nhat + NPetersen(n1=n1fill, n2=n2fill, m2=m2)
     }
     if(estimator=="Bailey") {
-      m2 <- rbinom(length, n2[i], n1[i]/N[i])
-      Nhat <- Nhat + NBailey(n1=n1[i], n2=n2[i], m2=m2)
+      m2 <- rbinom(length, n2fill, n1fill/N[i])
+      Nhat <- Nhat + NBailey(n1=n1fill, n2=n2fill, m2=m2)
     }
   }
   return(Nhat)
+  # if(!(length(n1)==length(n2)) | !(length(n1)==length(N))) stop("n1, n2, and N vectors must be of equal length")
+  # if(!estimator %in% c("Chapman","Bailey","Petersen")) stop("invalid estimator")
+  # Nhat <- 0
+  # for(i in 1:length(N)) {
+  #   if(estimator=="Chapman") {
+  #     m2 <- rhyper(length, n1[i], N[i]-n1[i], n2[i])
+  #     Nhat <- Nhat + NChapman(n1=n1[i], n2=n2[i], m2=m2)
+  #   }
+  #   if(estimator=="Petersen") {
+  #     m2 <- rhyper(length, n1[i], N[i]-n1[i], n2[i])
+  #     Nhat <- Nhat + NPetersen(n1=n1[i], n2=n2[i], m2=m2)
+  #   }
+  #   if(estimator=="Bailey") {
+  #     m2 <- rbinom(length, n2[i], n1[i]/N[i])
+  #     Nhat <- Nhat + NBailey(n1=n1[i], n2=n2[i], m2=m2)
+  #   }
+  # }
+  # return(Nhat)
 }
 
 
-# ---------MAYBE REVISIT THIS THOUGHT ----
-# rChapmanprob <- function(length,N,p1,p2) {
-#   n1 <- rbinom(length,size=N,prob=p1)
-#   n2 <- rbinom(length,size=N,prob=p2)
-#   out <- rChapman(length=length,N=N,n1=n1,n2=n2)
-# }
-#
-# plotdiscdensity(rChapmanprob(10000,1000,.1,.1))
-# plotdiscdensity(rChapman(10000,1000,100,100))
-#
-# mean(rChapmanprob(10000,1000,.1,.1)>1500)
-# mean(rChapman(10000,1000,100,100)>1500)
-#
-# plot(density(rChapmanprob(100000,10000,.1,.1)),col=2)
-# lines(density(rChapman(100000,10000,1000,1000)),col=4)
 
 
 #' Confidence Intervals for the Stratified Estimator

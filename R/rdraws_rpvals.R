@@ -4,12 +4,18 @@
 #'   sample size in both events.  The function first simulates a vector of
 #'   recaptures (m2) from a hypergeometric distribution, and then uses these to
 #'   compute a vector of draws from the estimator.
+#'
+#' If capture probabilities (\code{p1} and/or \code{p2}) are specified instead of sample size(s), the sample size(s) will first be drawn from a binomial distribution, then the number of recaptures.  If both sample size and capture probability are specified for a given sampling event, only the sample size will be used.
 #' @param length The length of the random vector to return.
 #' @param N The value of the true abundance. This may be a single number or
 #'   vector of values equal to \code{length}.
 #' @param n1 Number of individuals captured and marked in the first sample. This
 #'   may be a single number or vector of values equal to \code{length}.
 #' @param n2 Number of individuals captured in the second sample.  This may be a
+#'   single number or vector of values equal to \code{length}.
+#' @param p1 Alternately, probability of capture in the first sample. This
+#'   may be a single number or vector of values equal to \code{length}.
+#' @param p2 Alternately, probability of capture in the second sample.  This may be a
 #'   single number or vector of values equal to \code{length}.
 #' @return A vector of random draws from the Chapman estimator
 #' @note Any Petersen-type estimator (such as this) depends on a set of
@@ -24,11 +30,27 @@
 #' @seealso \link{NChapman}, \link{vChapman}, \link{seChapman}, \link{pChapman},
 #'   \link{powChapman}, \link{ciChapman}
 #' @importFrom stats rhyper
+#' @importFrom stats rbinom
 #' @examples
 #' draws <- rChapman(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
 #' @export
-rChapman <- function(length,N,n1,n2) {
+rChapman <- function(length,N,n1=NULL,n2=NULL,p1=NULL,p2=NULL) {
+  if(length(N)!=1 & length(N!=length)) stop("N must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n1)) if(length(n1)!=1 & length(n1)!=length) stop("n1 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n2)) if(length(n2)!=1 & length(n2)!=length) stop("n2 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(p1)) if(length(p1)!=1 & length(p1)!=length) stop("p1 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(p2)) if(length(p2)!=1 & length(p2)!=length) stop("p2 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n1) & !is.null(p1)) warning("both n1 and p1 specified - only n1 used")
+  if(!is.null(n2) & !is.null(p2)) warning("both n2 and p2 specified - only n2 used")
+  if(is.null(n1)) {
+    if(is.null(p1)) stop("need to supply either n1 or p1")
+    n1 <- rbinom(n=length, size=N, prob=p1)    # this is new
+  }
+  if(is.null(n2)) {
+    if(is.null(p2)) stop("need to supply either n2 or p2")
+    n2 <- rbinom(n=length, size=N, prob=p2)    # this is new
+  }
   m2 <- rhyper(length, n1, N-n1, n2)
   Nhat <- (n1+1)*(n2+1)/(m2+1)-1
   return(Nhat)
@@ -41,12 +63,18 @@ rChapman <- function(length,N,n1,n2) {
 #'   sample size in both events.  The function first simulates a vector of
 #'   recaptures (m2) from a hypergeometric distribution, and then uses these to
 #'   compute a vector of draws from the estimator.
+#'
+#' If capture probabilities (\code{p1} and/or \code{p2}) are specified instead of sample size(s), the sample size(s) will first be drawn from a binomial distribution, then the number of recaptures.  If both sample size and capture probability are specified for a given sampling event, only the sample size will be used.
 #' @param length The length of the random vector to return.
 #' @param N The value of the true abundance. This may be a single number or
 #'   vector of values equal to \code{length}.
 #' @param n1 Number of individuals captured and marked in the first sample. This
 #'   may be a single number or vector of values equal to \code{length}.
 #' @param n2 Number of individuals captured in the second sample.  This may be a
+#'   single number or vector of values equal to \code{length}.
+#' @param p1 Alternately, probability of capture in the first sample. This
+#'   may be a single number or vector of values equal to \code{length}.
+#' @param p2 Alternately, probability of capture in the second sample.  This may be a
 #'   single number or vector of values equal to \code{length}.
 #' @return A vector of random draws from the Petersen estimator
 #' @note Any Petersen-type estimator (such as this) depends on a set of
@@ -61,11 +89,27 @@ rChapman <- function(length,N,n1,n2) {
 #' @seealso \link{NPetersen}, \link{vPetersen}, \link{sePetersen}, \link{pPetersen},
 #'   \link{powPetersen}, \link{ciPetersen}
 #' @importFrom stats rhyper
+#' @importFrom stats rbinom
 #' @examples
 #' draws <- rPetersen(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
 #' @export
-rPetersen <- function(length,N,n1,n2) {
+rPetersen <- function(length,N,n1=NULL,n2=NULL,p1=NULL,p2=NULL) {
+  if(length(N)!=1 & length(N!=length)) stop("N must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n1)) if(length(n1)!=1 & length(n1)!=length) stop("n1 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n2)) if(length(n2)!=1 & length(n2)!=length) stop("n2 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(p1)) if(length(p1)!=1 & length(p1)!=length) stop("p1 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(p2)) if(length(p2)!=1 & length(p2)!=length) stop("p2 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n1) & !is.null(p1)) warning("both n1 and p1 specified - only n1 used")
+  if(!is.null(n2) & !is.null(p2)) warning("both n2 and p2 specified - only n2 used")
+  if(is.null(n1)) {
+    if(is.null(p1)) stop("need to supply either n1 or p1")
+    n1 <- rbinom(n=length, size=N, prob=p1)    # this is new
+  }
+  if(is.null(n2)) {
+    if(is.null(p2)) stop("need to supply either n2 or p2")
+    n2 <- rbinom(n=length, size=N, prob=p2)    # this is new
+  }
   m2 <- rhyper(length, n1, N-n1, n2)
   Nhat <- (n1)*(n2)/(m2)
   return(Nhat)
@@ -78,12 +122,18 @@ rPetersen <- function(length,N,n1,n2) {
 #'   sample size in both events.  The function first simulates a vector of
 #'   recaptures (m2) from a binomial distribution, and then uses these to
 #'   compute a vector of draws from the estimator.
+#'
+#' If capture probabilities (\code{p1} and/or \code{p2}) are specified instead of sample size(s), the sample size(s) will first be drawn from a binomial distribution, then the number of recaptures.  If both sample size and capture probability are specified for a given sampling event, only the sample size will be used.
 #' @param length The length of the random vector to return.
 #' @param N The value of the true abundance. This may be a single number or
 #'   vector of values equal to \code{length}.
 #' @param n1 Number of individuals captured and marked in the first sample. This
 #'   may be a single number or vector of values equal to \code{length}.
 #' @param n2 Number of individuals captured in the second sample.  This may be a
+#'   single number or vector of values equal to \code{length}.
+#' @param p1 Alternately, probability of capture in the first sample. This
+#'   may be a single number or vector of values equal to \code{length}.
+#' @param p2 Alternately, probability of capture in the second sample.  This may be a
 #'   single number or vector of values equal to \code{length}.
 #' @return A vector of random draws from the Bailey estimator
 #' @note Any Petersen-type estimator (such as this) depends on a set of
@@ -102,7 +152,22 @@ rPetersen <- function(length,N,n1,n2) {
 #' draws <- rBailey(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
 #' @export
-rBailey <- function(length,N,n1,n2) {
+rBailey <- function(length,N,n1=NULL,n2=NULL,p1=NULL,p2=NULL) {
+  if(length(N)!=1 & length(N!=length)) stop("N must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n1)) if(length(n1)!=1 & length(n1)!=length) stop("n1 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n2)) if(length(n2)!=1 & length(n2)!=length) stop("n2 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(p1)) if(length(p1)!=1 & length(p1)!=length) stop("p1 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(p2)) if(length(p2)!=1 & length(p2)!=length) stop("p2 must be a single number, or a vector of length equal to the number of draws")
+  if(!is.null(n1) & !is.null(p1)) warning("both n1 and p1 specified - only n1 used")
+  if(!is.null(n2) & !is.null(p2)) warning("both n2 and p2 specified - only n2 used")
+  if(is.null(n1)) {
+    if(is.null(p1)) stop("need to supply either n1 or p1")
+    n1 <- rbinom(n=length, size=N, prob=p1)    # this is new
+  }
+  if(is.null(n2)) {
+    if(is.null(p2)) stop("need to supply either n2 or p2")
+    n2 <- rbinom(n=length, size=N, prob=p2)    # this is new
+  }
   #m2 <- rhyper(length, n1, N-n1, n2)
   m2 <- rbinom(length,n2,n1/N)
   Nhat <- (n1)*(n2+1)/(m2+1)

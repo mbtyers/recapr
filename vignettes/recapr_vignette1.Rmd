@@ -61,7 +61,7 @@ ciChapman(n1=100, n2=150, m2=20)
 
 ## Simulation via Random Draws and Plotting Discrete Distributions
 
-Vectors of random draws can be generated for the Chapman, Petersen, or Bailey estimators using `rChapman()`, `rPetersen()`, or `rBailey()` from an assumed value of total abundance (`N`).  This may be useful for simulation.
+Vectors of random draws can be generated for the Chapman, Petersen, or Bailey estimators using `rChapman()`, `rPetersen()`, or `rBailey()` from an assumed value of total abundance (`N`).  This may be useful for simulation.  Sample sizes `n1` and `n2` may be specified, but capture probabilities `p1` and/or `p2' may be used instead.  If so, sample size(s) will first be drawn from a binomial distribution for each random draw before drawing from the abundance estimator. 
 
 A plotting function is also provided for vectors of discrete (non-continuous) data.  Abundance estimates are calculated from count data, with the result having a non-integer but also non-continuous support.  It is possible that `plotdiscdensity()` may be more appropriate than a kernel density plot and more illustrative than a histogram.
 
@@ -164,7 +164,7 @@ mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)
 NDarroch(n1counts=c(484,1468,399), n2counts=c(847,6616,2489), stratamat=mat)
 ```
 
-If no movement can occur between strata, a completely stratified estimator can be used.  Functions `Nstrat()`, `vstrat()`, `sestrat()`, and `cistrat()`, are provided to compute abundance estimates, estimated variance, standard error, and confidence intervals.  In all cases, `n1`, `n2`, and `m2` accept vectors of first- and second-event sample sizes and recapture numbers by strata, and the additional `estimator` accepts the type of Petersen-type estimator to use: either `"Chapman"`, `"Petersen"`, or `"Bailey"`.  Additionally, `rstrat()` generates random draws from given vectors of `N`, `n1`, and `n2`.
+If no movement can occur between strata, a completely stratified estimator can be used.  Functions `Nstrat()`, `vstrat()`, `sestrat()`, and `cistrat()`, are provided to compute abundance estimates, estimated variance, standard error, and confidence intervals.  In all cases, `n1`, `n2`, and `m2` accept vectors of first- and second-event sample sizes and recapture numbers by strata, and the additional `estimator` accepts the type of Petersen-type estimator to use: either `"Chapman"`, `"Petersen"`, or `"Bailey"`.  Additionally, `rstrat()` generates random draws from given vectors of `N`, `n1`, and `n2`, or with vectors of capture probabilities `p1` and/or `p2`.
 
 ```{r,fig.width=7, fig.height=5}
 Nstrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))

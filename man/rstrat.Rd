@@ -4,7 +4,8 @@
 \alias{rstrat}
 \title{Random Draws from the Stratified Estimator}
 \usage{
-rstrat(length, N, n1, n2, estimator = "Chapman")
+rstrat(length, N, n1 = NULL, n2 = NULL, p1 = NULL, p2 = NULL,
+  estimator = "Chapman")
 }
 \arguments{
 \item{length}{The length of the random vector to return.}
@@ -14,6 +15,10 @@ rstrat(length, N, n1, n2, estimator = "Chapman")
 \item{n1}{A vector of the number of individuals captured and marked in the first sample, for each stratum.}
 
 \item{n2}{A vector of the number of individuals captured in the second sample, for each stratum.}
+
+\item{p1}{Alternately, a vector of probabilities of capture for the first event, for each stratum.}
+
+\item{p2}{Alternately, a vector of probabilities of capture for the second event, for each stratum.}
 
 \item{estimator}{The type of estimator to use.  Allowed values are
 \code{"Chapman"}, \code{"Petersen"}, and \code{"Bailey"}.  Default to
@@ -30,6 +35,8 @@ Returns a vector of random draws from the stratified estimator in a
   compute a vector of draws from the estimator.
 
   It may prove useful to investigate the behavior of the stratified estimator under relevant scenarios.
+
+If capture probabilities (\code{p1} and/or \code{p2}) are specified instead of sample size(s), the sample size(s) will first be drawn from a binomial distribution, then the number of recaptures.  If both sample size and capture probability are specified for a given sampling event, only the sample size will be used.
 }
 \examples{
 draws <- rstrat(length=100000, N=c(5000,10000), n1=c(500,200), n2=c(500,200))
