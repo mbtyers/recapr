@@ -399,11 +399,8 @@ pPetersen <- function(estN=NULL,nullN,n1,n2,m2=NULL,nsim=100000,alternative="les
 #' plot(Ntotry, pows)
 #' @export
 powBailey <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less") {
-  reject <- NA
-  sim <- rBailey(nsim,trueN,n1,n2)
-  for(i in 1:length(sim)) {
-    reject[i] <- (pBailey(estN=sim[i],nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha)
-  }
+  sim <- rPetersen(nsim,trueN,n1,n2)
+  reject <- vapply(sim, function(x) pBailey(estN=x,nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha, logical(1))
   return(mean(reject))
 }
 
@@ -441,11 +438,8 @@ powBailey <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less")
 #' plot(Ntotry, pows)
 #' @export
 powChapman <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less") {
-  reject <- NA
-  sim <- rChapman(nsim,trueN,n1,n2)
-  for(i in 1:length(sim)) {
-    reject[i] <- (pChapman(estN=sim[i],nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha)
-  }
+  sim <- rPetersen(nsim,trueN,n1,n2)
+  reject <- vapply(sim, function(x) pChapman(estN=x,nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha, logical(1))
   return(mean(reject))
 }
 
@@ -483,14 +477,20 @@ powChapman <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less"
 #' plot(Ntotry, pows)
 #' @export
 powPetersen <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less") {
-  reject <- NA
   sim <- rPetersen(nsim,trueN,n1,n2)
-  for(i in 1:length(sim)) {
-    reject[i] <- (pPetersen(estN=sim[i],nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha)
-  }
+  reject <- vapply(sim, function(x) pPetersen(estN=x,nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha, logical(1))
   return(mean(reject))
 }
-
+#
+# powPetersen2 <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less") {
+#   reject <- NA
+#   sim <- rPetersen(nsim,trueN,n1,n2)
+#   # for(i in 1:length(sim)) {
+#   #   reject[i] <- (pPetersen(estN=sim[i],nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha)
+#   # }
+#   reject <- vapply(sim, function(x) pPetersen(estN=x,nullN=nullN,n1,n2,nsim=nsim,alternative=alternative)<alpha, logical(1))
+#   return(mean(reject))
+# }
 
 #' Plotting the Density of a Vector of Discrete Values
 #' @description Plots the empirical density of a vector of discrete values, approximating the probability mass function (pmf).  This can be considered a more appropriate alternative to \code{plot(density(x))} in the case of a vector with a discrete (non-continuous) support, such as that calculated by an abundance estimator.
@@ -503,16 +503,12 @@ powPetersen <- function(nullN,trueN,n1,n2,alpha=.05,nsim=10000,alternative="less
 #' draws <- rChapman(length=100000, N=500, n1=100, n2=100)
 #' plotdiscdensity(draws)  #plots the density of a vector of discrete values
 #' @importFrom graphics plot
-#' @importFrom graphics lines
+#' @importFrom graphics segments
 #' @export
 plotdiscdensity <- function(x,xlab="value",ylab="density",...) {
   uniquevals <- sort(unique(x))
-  props <- NA
-  for(i in 1:length(uniquevals)) {
-    props[i] <- length(x[x==uniquevals[i]])/length(x)
-  }
+  props <- vapply(uniquevals, function(u) length(x[x==u])/length(x), numeric(1))
   plot(uniquevals,props,xlab=xlab,ylab=ylab,...=...)
-  for(i in 1:length(uniquevals)) lines(rep(uniquevals[i],2),c(0,props[i]))
+  segments(x0=uniquevals, y0=0, x1=uniquevals, y1=props)
 }
 #discdensity(rPetersen(1000000,10000,1000,1000))
-

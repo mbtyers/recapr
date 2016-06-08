@@ -29,7 +29,7 @@ test_that("rdraws_pvals",{
   expect_error(rChapman(length=10, N=100, n1=1:10, n2=1:4), "n2 must be a single number, or a vector of length equal to the number of draws")
   expect_error(rChapman(length=10, N=100, n1=10), "need to supply either n2 or p2")
   expect_warning(rChapman(length=10, N=100, n1=10, n2=5, p2=.5), "both n2 and p2 specified - only n2 used")
-  expect_equal(mean(rChapman(length=100000, N=100, n1=10, n2=5, p2=.5)), 50.38573, tolerance=10)
+  expect_equal(mean(suppressWarnings(rChapman(length=100000, N=100, n1=10, n2=5, p2=.5))), 50.38573, tolerance=10)
 
   expect_equal(length(out1),2,tolerance=0.001)
   expect_equal(length(out2),2,tolerance=0.001)

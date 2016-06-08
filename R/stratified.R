@@ -25,34 +25,12 @@
 Nstrat <- function(n1,n2,m2,estimator="Chapman") {
   if(!(length(n1)==length(n2)) | !(length(n1)==length(m2))) stop("n1, n2, and m2 vectors must be of equal length")
   if(!estimator %in% c("Chapman","Bailey","Petersen")) stop("invalid estimator")
-  sum <- 0
-  # sumb <- 0
-  for(i in 1:length(n2)) {
-    # m2b <- rbinom(10000,n2[i],m2[i]/n2[i])
-    if(estimator=="Chapman") {
-      est <- NChapman(n1=n1[i],n2=n2[i],m2=m2[i])
-      # estb <- NChapman(n1=n1[i],n2=n2[i],m2=m2b)
-    }
-    if(estimator=="Bailey") {
-      est <- NBailey(n1=n1[i],n2=n2[i],m2=m2[i])
-      # estb <- NBailey(n1=n1[i],n2=n2[i],m2=m2b)
-    }
-    if(estimator=="Petersen") {
-      est <- NPetersen(n1=n1[i],n2=n2[i],m2=m2[i])
-      # estb <- NPetersen(n1=n1[i],n2=n2[i],m2=m2b)
-    }
-    sum <- sum+est
-    # sumb <- sumb+estb
-  }
-  # mediansumb <- median(sumb)
-  # meansumb <- mean(sumb)
-  out <- sum #list(Nhat=sum,Nhat_unb=meansumb,Nhat_medunb=mediansumb)
-  return(out)
+  if(estimator=="Chapman") est <- mapply(NChapman, n1=n1, n2=n2, m2=m2)
+  if(estimator=="Bailey") est <- mapply(NBailey, n1=n1, n2=n2, m2=m2)
+  if(estimator=="Petersen") est <- mapply(NPetersen, n1=n1, n2=n2, m2=m2)
+  sum <- sum(est)
+  return(sum)
 }
-
-#Nstrat(n1=c(100,200),n2=c(100,500),m2=c(10,10))
-#NChapman(100,100,10)+NChapman(200,500,10)
-
 
 #' Estimated Variance of Stratified Abundance Estimator
 #' @description Calculates the estimated variance of the stratified estimator
@@ -84,14 +62,10 @@ Nstrat <- function(n1,n2,m2,estimator="Chapman") {
 vstrat <- function(n1,n2,m2,estimator="Chapman") {
   if(!(length(n1)==length(n2)) | !(length(n1)==length(m2))) stop("n1, n2, and m2 vectors must be of equal length")
   if(!estimator %in% c("Chapman","Bailey","Petersen")) stop("invalid estimator")
-  sum <- 0
-  for(i in 1:length(n2)) {
-    if(estimator=="Chapman") est <- vChapman(n1=n1[i],n2=n2[i],m2=m2[i])
-    if(estimator=="Bailey") est <- vBailey(n1=n1[i],n2=n2[i],m2=m2[i])
-    if(estimator=="Petersen") est <- vPetersen(n1=n1[i],n2=n2[i],m2=m2[i])
-    sum <- sum+est
-  }
-  return(sum)
+  if(estimator=="Chapman") est <- mapply(vChapman, n1=n1, n2=n2, m2=m2)
+  if(estimator=="Bailey") est <- mapply(vBailey, n1=n1, n2=n2, m2=m2)
+  if(estimator=="Petersen") est <- mapply(vPetersen, n1=n1, n2=n2, m2=m2)
+  return(sum(est))
 }
 
 #vstrat(n1=c(100,200),n2=c(100,500),m2=c(10,10))
