@@ -2,7 +2,7 @@
 % Please edit documentation in R/consistency.R
 \name{consistencytest}
 \alias{consistencytest}
-\title{Consistency Tests for the Abundance Estimator}
+\title{Consistency Tests for the Abundance Estimator, Partial Stratification}
 \usage{
 consistencytest(n1counts, n2counts, m2strata1 = NULL, m2strata2 = NULL,
   stratamat = NULL, ...)

@@ -2,9 +2,9 @@
 % Please edit documentation in R/consistency.R
 \name{strattest}
 \alias{strattest}
-\title{Consistency Tests for the Abundance Estimator}
+\title{Consistency Tests for the Abundance Estimator, Complete Stratification}
 \usage{
-strattest(n1, n2, m2)
+strattest(n1, n2, m2, ...)
 }
 \arguments{
 \item{n1}{Vector of n1 counts (sample size in the first event), each element
@@ -19,28 +19,38 @@ each element corresponding to one stratum.}
 \item{...}{Additional arguments for \link[stats]{chisq.test}}
 }
 \value{
-A list of class \code{"recapr_strattest"} with the following components:
-\itemize{
-\item{\code{cap_table}} {The contingency table used for the first test}
-\item{\code{cap_Xsqd}} {The chi-squared test statistic in the first test}
-\item{\code{cap_df}} {The associated degrees of freedom in the first test}
-\item{\code{cap_pval}} {The p-value returned from the first test}
-\item{\code{recap_table}} {The contingency table used for the second test}
-\item{\code{recap_Xsqd}} {The chi-squared test statistic in the second test}
-\item{\code{recap_df}} {The associated degrees of freedom in the second test}
-\item{\code{recap_pval}} {The p-value returned from the second test}
-}
+A list of class \code{"recapr_strattest"} with the following
+  components: \itemize{ \item{\code{event1_table}} {The contingency table
+  used for the first test} \item{\code{event1_Xsqd}} {The chi-squared test
+  statistic in the first test} \item{\code{event1_df}} {The associated
+  degrees of freedom in the first test} \item{\code{event1_pval}} {The
+  p-value returned from the first test} \item{\code{event2_table}} {The
+  contingency table used for the second test} \item{\code{event2_Xsqd}} {The
+  chi-squared test statistic in the second test} \item{\code{event2_df}} {The
+  associated degrees of freedom in the second test} \item{\code{event2_pval}}
+  {The p-value returned from the second test} \item{\code{event1v2_table}}
+  {The contingency table used for the third test} \item{\code{event1v2_Xsqd}}
+  {The chi-squared test statistic in the third test}
+  \item{\code{event1v2_df}} {The associated degrees of freedom in the third
+  test} \item{\code{event1v2_pval}} {The p-value returned from the second
+  third} }
 }
 \description{
 Conducts two chi-squared tests for the consistency of the
   Petersen-type abundance estimator.  These tests provide explore evidence
   against equal capture probabilities in either the first or second sampling
-  event.
+  event.  Also conducts a third chi-squared test of unequal capture
+  probabilities between sampling events for each stratum, in the case of
+  small sample sizes (fewer than 100 in either sampling event and fewer than
+  30 recaptures), which may be used to suggest unequal capture probabilities
+  in either the first or second event.
 
-  Typically, if either of these test p-values is greater than the
+  Typically, if either of the first two test p-values is greater than the
   significance level, use of a Petersen-type estimator is considered
-  justified.  If both tests give evidence of unequal capture probabilities
-  between strata, a stratified estimator should be used, such as \link{Nstrat}.
+  justified.
+
+  If tests give evidence of unequal capture probabilities between strata, a
+  stratified estimator should be used, such as \link{Nstrat}.
 
   This function assumes stratification in both sampling events, such that
   individuals cannot move from one strata to another (such as by size or
@@ -65,6 +75,6 @@ strattest(n1=c(100,100), n2=c(50,200), m2=c(20,15))
 Matt Tyers
 }
 \seealso{
-\link{strattest}, \link{Nstrat}
+\link{powstrattest}, \link{Nstrat}, \link{consistencytest}
 }
 
