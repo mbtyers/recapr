@@ -198,6 +198,9 @@ print.recapr_consistencytest <- function(x, ...) {
 #'   \item{\code{alpha}} {The significance level used}
 #'   }
 #' @author Matt Tyers
+#' @importFrom stats pchisq
+#' @importFrom stats qchisq
+#' @importFrom stats rmultinom
 #' @references Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
 #'
 #' Code adapted from the 'pwr' package:
@@ -205,7 +208,14 @@ print.recapr_consistencytest <- function(x, ...) {
 #' package version 1.1-3. https://CRAN.R-project.org/package=pwr
 #' @seealso \link{consistencytest}, \link{NDarroch}
 #' @examples
-#' powstrattest(N=c(10000,20000),n1=c(1000,2000),n2=c(200,200))
+#' mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4),nrow=4,ncol=4,byrow=T)
+#' powconsistencytest(N1=c(2000,2000,2000,2000),N2=c(2000,2000,2000,2000),n1=c(150,150,150,150),n2=c(150,150,150,150),pmat=mat)
+#'
+#' mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4),nrow=4,ncol=4,byrow=T)
+#' powconsistencytest(N1=c(2000,2000,2000,2000),N2=c(2000,2000,2000,2000),n1=c(150,150,150,150),n2=c(150,150,150,150),pmat=mat)
+#'
+#' mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4),nrow=4,ncol=4,byrow=T)
+#' powconsistencytest(N1=c(2000,2000,2000,2000),N2=c(2000,2000,2000,2000),n1=c(150,150,150,150),n2=c(150,150,150,150),pmat=mat)
 #' @export
 powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   if(sum(N1)!=sum(N2)) stop("N1 total not equal to N2 total")
@@ -320,8 +330,8 @@ powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) 
   rownames(p2a) <- rownames(p2anull) <- c("Marked","Unmarked")
   colnames(p2a) <- colnames(p2anull) <- 1:nstrata1
 
-  if(sim) out <- list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim2,ntest1=sum(n1),p0test1=probmat_mixing,p1test1=probmat_mixingnull,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim2,ntest2=sum(n2),p0test2=p1a,p1test2=p1anull,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim2,ntest3=sum(n1),p0test3=p2a,p1test3=p2anull,alpha=alpha)
-  else out <- list(pwr1_c=pwr1_c,ntest1=sum(n1),p0test1=probmat_mixing,p1test1=probmat_mixingnull,pwr2_c=pwr2_c,ntest2=sum(n2),p0test2=p1a,p1test2=p1anull,pwr3_c=pwr3_c,ntest3=sum(n1),p0test3=p2a,p1test3=p2anull,alpha=alpha)
+  if(sim) out <- list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim2,ntest1=sum(n1),p1test1=probmat_mixing,p0test1=probmat_mixingnull,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim2,ntest2=sum(n2),p1test2=p1a,p0test2=p1anull,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim2,ntest3=sum(n1),p1test3=p2a,p0test3=p2anull,alpha=alpha)
+  else out <- list(pwr1_c=pwr1_c,ntest1=sum(n1),p1test1=probmat_mixing,p0test1=probmat_mixingnull,pwr2_c=pwr2_c,ntest2=sum(n2),p1test2=p1a,p1test2=p0anull,pwr3_c=pwr3_c,ntest3=sum(n1),p1test3=p2a,p0test3=p2anull,alpha=alpha)
   class(out) <- "recapr_consistencypow"
   return(out)
   # return(list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim,pwr1_sim2=pwr1_sim2,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim,pwr2_sim2=pwr2_sim2,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim,pwr3_sim2=pwr3_sim2))
@@ -523,6 +533,10 @@ print.recapr_strattest <- function(x, ...) {
 #'   \item{\code{power}} {The test power, calculated by Cohen's method}
 #'   \item{\code{power_sim}} {The test power, calculated via simulation} }
 #' @author Matt Tyers
+#' @importFrom stats pchisq
+#' @importFrom stats qchisq
+#' @importFrom stats rbinom
+#' @importFrom stats rhyper
 #' @references Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
 #'
 #' Code adapted from the 'pwr' package:
