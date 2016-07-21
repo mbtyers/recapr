@@ -137,8 +137,10 @@ plotn2sim <- function(N, n1, conf=c(0.99,0.95,0.85,0.8,0.75),n2range=NULL,n2step
     lines(accsimcalc[,1],accsimcalc[,i],col=cols[i-1],lwd=2)
     lines(accsimcalc[,1],accsimcalc[,(i+length(conftry))],col=cols[i-1],lwd=2)
   }
-  legend(par("usr")[1]+0.82*(par("usr")[2]-par("usr")[1]),
-         par("usr")[4],
+  # legend(par("usr")[1]+0.82*(par("usr")[2]-par("usr")[1]),
+  #        par("usr")[4],
+  #        legend=conftry,lwd=2,col=cols,title="conf (1-alpha)")
+  legend("topright",
          legend=conftry,lwd=2,col=cols,title="conf (1-alpha)")
 
 
@@ -218,7 +220,8 @@ plotn1n2simmatrix <- function(N,conf=0.95,nrange=NULL,nstep=NULL,estimator="Chap
   rect(xleft,ybottom,xright,ytop,col=colmat,border=NA)
   grid(col=1)
   #throwaway <- c(.003,.03,.07,.12,.17,.22,.3,.7)
-  legend(0,max(n2),legend=c("0.00 - 0.01", "0.01 - 0.05", "0.05 - 0.10", "0.10 - 0.15", "0.15 - 0.20", "0.20 - 0.25", "0.25 - 0.50", "0.50 +"), col=cols, pch=15,title=paste0("rel acc, conf=",conf))
+  # legend(0,max(n2),legend=c("0.00 - 0.01", "0.01 - 0.05", "0.05 - 0.10", "0.10 - 0.15", "0.15 - 0.20", "0.20 - 0.25", "0.25 - 0.50", "0.50 +"), col=cols, pch=15,title=paste0("rel acc, conf=",conf))
+  legend("topleft",legend=c("0.00 - 0.01", "0.01 - 0.05", "0.05 - 0.10", "0.10 - 0.15", "0.15 - 0.20", "0.20 - 0.25", "0.25 - 0.50", "0.50 +"), col=cols, pch=15,title=paste0("rel acc, conf=",conf))
 }
 
 #n12simmatrix(N=10000,nsim=20000,nrange=c(900,1100))

@@ -57,7 +57,17 @@ Conducts power calculations of the chi-squared tests for the
   stratification setting, such as by time or geographic area.  In the case of partial stratification, individuals may move from one stratum to another between the first and second sampling events, and strata do not need to be the same between events.
 }
 \examples{
-powstrattest(N=c(10000,20000),n1=c(1000,2000),n2=c(200,200))
+mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
+powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
+    n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+
+mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
+powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
+    n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+
+mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=TRUE)
+powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
+    n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
 }
 \author{
 Matt Tyers

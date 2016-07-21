@@ -141,17 +141,17 @@ consistencytest <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, 
 #' @method print recapr_consistencytest
 #' @export
 print.recapr_consistencytest <- function(x, ...) {
-  cat('\n',"Mixing test",'\n')
+  cat("MIXING TEST",'\n')
   cat("H0: Movement probabilities from stratum i to stratum j are the same among sections (all theta_ij = theta_j)",'\n','\n')
   print(x$test1_tab)
   cat('\n',"X-squared: ",x$test1_Xsqd,"  df: ",x$test1_df,"  p-val: ",x$test1_pval,'\n','\n')
 
-  cat('\n',"Equal proportions test",'\n')
+  cat("EQUAL PROPORTIONS TEST",'\n')
   cat("H0: Equal probability of capture among n1 strata (all p_i equal)",'\n','\n')
   print(x$test2_tab)
   cat('\n',"X-squared: ",x$test2_Xsqd,"  df: ",x$test2_df,"  p-val: ",x$test2_pval,'\n','\n')
 
-  cat('\n',"Complete mixing test",'\n')
+  cat("COMPLETE MIXING TEST",'\n')
   cat("H0: Equal probability of recapture among n2 strata (all p_j equal)",'\n','\n')
   print(x$test3_tab)
   cat('\n',"X-squared: ",x$test3_Xsqd,"  df: ",x$test3_df,"  p-val: ",x$test3_pval,'\n','\n')
@@ -208,14 +208,17 @@ print.recapr_consistencytest <- function(x, ...) {
 #' package version 1.1-3. https://CRAN.R-project.org/package=pwr
 #' @seealso \link{consistencytest}, \link{NDarroch}
 #' @examples
-#' mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4),nrow=4,ncol=4,byrow=T)
-#' powconsistencytest(N1=c(2000,2000,2000,2000),N2=c(2000,2000,2000,2000),n1=c(150,150,150,150),n2=c(150,150,150,150),pmat=mat)
+#' mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
+#' powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
+#'     n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
 #'
-#' mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4),nrow=4,ncol=4,byrow=T)
-#' powconsistencytest(N1=c(2000,2000,2000,2000),N2=c(2000,2000,2000,2000),n1=c(150,150,150,150),n2=c(150,150,150,150),pmat=mat)
+#' mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
+#' powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
+#'     n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
 #'
-#' mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4),nrow=4,ncol=4,byrow=T)
-#' powconsistencytest(N1=c(2000,2000,2000,2000),N2=c(2000,2000,2000,2000),n1=c(150,150,150,150),n2=c(150,150,150,150),pmat=mat)
+#' mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=TRUE)
+#' powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
+#'     n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
 #' @export
 powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   if(sum(N1)!=sum(N2)) stop("N1 total not equal to N2 total")
@@ -331,7 +334,7 @@ powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) 
   colnames(p2a) <- colnames(p2anull) <- 1:nstrata1
 
   if(sim) out <- list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim2,ntest1=sum(n1),p1test1=probmat_mixing,p0test1=probmat_mixingnull,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim2,ntest2=sum(n2),p1test2=p1a,p0test2=p1anull,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim2,ntest3=sum(n1),p1test3=p2a,p0test3=p2anull,alpha=alpha)
-  else out <- list(pwr1_c=pwr1_c,ntest1=sum(n1),p1test1=probmat_mixing,p0test1=probmat_mixingnull,pwr2_c=pwr2_c,ntest2=sum(n2),p1test2=p1a,p1test2=p0anull,pwr3_c=pwr3_c,ntest3=sum(n1),p1test3=p2a,p0test3=p2anull,alpha=alpha)
+  else out <- list(pwr1_c=pwr1_c,ntest1=sum(n1),p1test1=probmat_mixing,p0test1=probmat_mixingnull,pwr2_c=pwr2_c,ntest2=sum(n2),p1test2=p1a,p0test2=p1anull,pwr3_c=pwr3_c,ntest3=sum(n1),p1test3=p2a,p0test3=p2anull,alpha=alpha)
   class(out) <- "recapr_consistencypow"
   return(out)
   # return(list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim,pwr1_sim2=pwr1_sim2,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim,pwr2_sim2=pwr2_sim2,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim,pwr3_sim2=pwr3_sim2))

@@ -132,6 +132,8 @@ plotn1n2simmatrix(N=1000, nsim=2000)
 
 ## Tests of Consistency for the Estimator
 
+### Partial Stratification
+
 For a simple Petersen-type estimator of abundance to be consistent, one of three conditions must be true: either there must be complete mixing in the time between events, or the probability of capture must be equal for all individuals in the first event, or the probability of capture must be equal for all individuals in the second event.  This is typically investigated by means of a set of $\chi^2$ tests for each condition, with failure to reject the null hypothesis of any of the tests indicating that a simple Petersen-type estimator is reasonable to use.  If the null hypotheses are rejected in all tests, a completely stratified or partially stratified (Darroch-type) estimator should be used.
 
 The `consistencytest()` function is provided for the instance that sampling in both events is stratified in such a way that movement between strata may occur, such as spatially or temporally.  Event 1 and 2 strata do not need to be the same.  Arguments `n1counts` and `n2counts` accept vectors of sample sizes in each event by strata.  Recaptures of marked individuals can be specified in one of two ways: either as vectors of strata membership in `m2strata1` and `m2strata2`, or as a matrix in `stratamat`.  Arguments `m2strata1` and `m2strata2` accept vectors of the first- and second-event stratum membership for each recaptured individual, with only entries of `1, 2, 3, ...` accepted.  Alternatively, `stratamat` accepts a matrix in which each cell represents the number of recaptures for each combination of event 1 and event 2 strata, with rows corresponding to event 1 strata and columns corresponding to event 2 strata.
@@ -143,12 +145,29 @@ mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
 consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), stratamat=mat)
 ```
 
+Since the decision to use a simple Petersen-type estimator is based on a failure to reject, the power of the tests used must be considered.  The `powstrattest()` function uses simulation as well as Cohen's non-central $\chi^2$ method to calculate the power of the consistency tests, given assumed values of total abundance by strata and anticipated values of sample sizes by strata and cross-classification probabilities.
+
+The `pmat` argument is a matrix of scaled cross-classification probabilities respective of first- and second-event stratification.  Probabilities do not need to sum to one, as they are rescaled within the function.
+
+```{r}
+mat <- matrix(c(1,2,3,3,2,1), nrow=2, ncol=3, byrow=TRUE)
+powconsistencytest(N1=c(1000,2000), N2=c(800,1000,1200), n1=c(100,200), n2=c(100,100,100), pmat=mat)
+```
+
+### Complete Stratification
+
 In the event that there is no movement observed between strata, or the population is stratified in such a way that there can be no movement between strata (such as by age or sex), a stratified estimator should be used.  The `strattest()` function provides a means of conducting the typical $\chi^2$ tests to investigate the necessity of a stratified estimator.
 
-Since strata membership remains the same in both events, usage is simpler, with `n1`, `n2`, and `m2` accepting vectors of first- and second-event sample sizes and recapture numbers by strata.  In the example below, there is strong evidence of unequal capture probabilities in the first event but not in the second.
+Since strata membership remains the same in both events, usage is simpler, with `n1`, `n2`, and `m2` accepting vectors of first- and second-event sample sizes and recapture numbers by strata.  In the example below, there is strong evidence of unequal capture probabilities in the first event but not in the second, and very strong evidence of differences in respective stratum capture probabilities between the first and second events.
 
 ```{r}
 strattest(n1=c(100,100), n2=c(50,200), m2=c(20,15))
+```
+
+Similarly, the `powstrattest()` function provides power estimates for the tests used in `strattest()`, given assumed values of total abundance by strata and anticipated values of sample sizes by strata, using simulation as well as Cohen's non-central $\chi^2$ method. 
+
+```{r}
+powstrattest(N=c(1000,2000), n1=c(100,200), n2=c(200,200))
 ```
 
 <a name="Partially and Completely Stratified Estimators"></a>
