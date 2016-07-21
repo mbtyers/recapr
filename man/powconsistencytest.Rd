@@ -8,11 +8,11 @@ powconsistencytest(N1, N2, n1, n2, pmat, alpha = 0.05, sim = TRUE,
   nsim = 10000)
 }
 \arguments{
-\item{N1}{Vector of assumed total abundance, with each element corresponding to one
-stratum, according to first-event stratification.}
+\item{N1}{Vector of assumed total abundance, with each element corresponding
+to one stratum, according to first-event stratification.}
 
-\item{N2}{Vector of assumed total abundance, with each element corresponding to one
-stratum, according to second-event stratification.}
+\item{N2}{Vector of assumed total abundance, with each element corresponding
+to one stratum, according to second-event stratification.}
 
 \item{n1}{Vector of anticipated n1 counts (sample size in the first event),
 each element corresponding to one stratum.}
@@ -20,7 +20,10 @@ each element corresponding to one stratum.}
 \item{n2}{Vector of anticipated n2 counts (sample size in the second event),
 each element corresponding to one stratum.}
 
-\item{pmat}{Matrix of assumed movement probabilities between strata, with rows corresponding to first-event strata and columns corresponding to second-event strata.  Values do not need to add to 1, and only must be proportional to one another as desired.}
+\item{pmat}{Matrix of assumed cross-classification probabilities between strata, with
+rows corresponding to first-event strata and columns corresponding to
+second-event strata.  Values do not need to add to 1, and only must be
+proportional to one another as desired.}
 
 \item{alpha}{Significance level for testing.  Defaults to \code{0.05}}
 
@@ -31,30 +34,31 @@ Cohen's method.  Defaults to \code{TRUE}.}
 \code{10000}.}
 }
 \value{
-An object of class \code{"recapr_consistencypow"}
-  with the following components: \itemize{
-  \item{\code{pwr1_c}} {Power of the first test, according to Cohen's method}
-  \item{\code{pwr1_sim}} {Power of the first test, from simulation}
-  \item{\code{ntest1}} {The sample size used for the first test}
-  \item{\code{p0test1}} {The null-hypothesis probabilities for the first test}
-  \item{\code{p1test1}} {The alt-hypothesis probabilities for the first test}
-  \item{\code{pwr2_c}} {Power of the second test, according to Cohen's method}
-  \item{\code{pwr2_sim}} {Power of the second test, from simulation}
-  \item{\code{ntest2}} {The sample size used for the second test}
-  \item{\code{p0test2}} {The null-hypothesis probabilities for the second test}
-  \item{\code{p1test2}} {The alt-hypothesis probabilities for the second test}
-  \item{\code{pwr3_c}} {Power of the third test, according to Cohen's method}
-  \item{\code{pwr3_sim}} {Power of the third test, from simulation}
-  \item{\code{ntest3}} {The sample size used for the third test}
-  \item{\code{p0test3}} {The null-hypothesis probabilities for the third test}
-  \item{\code{p1test3}} {The alt-hypothesis probabilities for the third test}
-  \item{\code{alpha}} {The significance level used}
-  }
+An object of class \code{"recapr_consistencypow"} with the following
+  components: \itemize{ \item{\code{pwr1_c}} {Power of the first test,
+  according to Cohen's method} \item{\code{pwr1_sim}} {Power of the first
+  test, from simulation} \item{\code{ntest1}} {The sample size used for the
+  first test} \item{\code{p0test1}} {The null-hypothesis probabilities for
+  the first test} \item{\code{p1test1}} {The alt-hypothesis probabilities for
+  the first test} \item{\code{pwr2_c}} {Power of the second test, according
+  to Cohen's method} \item{\code{pwr2_sim}} {Power of the second test, from
+  simulation} \item{\code{ntest2}} {The sample size used for the second test}
+  \item{\code{p0test2}} {The null-hypothesis probabilities for the second
+  test} \item{\code{p1test2}} {The alt-hypothesis probabilities for the
+  second test} \item{\code{pwr3_c}} {Power of the third test, according to
+  Cohen's method} \item{\code{pwr3_sim}} {Power of the third test, from
+  simulation} \item{\code{ntest3}} {The sample size used for the third test}
+  \item{\code{p0test3}} {The null-hypothesis probabilities for the third
+  test} \item{\code{p1test3}} {The alt-hypothesis probabilities for the third
+  test} \item{\code{alpha}} {The significance level used} }
 }
 \description{
 Conducts power calculations of the chi-squared tests for the
   consistency of the Petersen-type abundance estimator, in a partial
-  stratification setting, such as by time or geographic area.  In the case of partial stratification, individuals may move from one stratum to another between the first and second sampling events, and strata do not need to be the same between events.
+  stratification setting, such as by time or geographic area.  In the case of
+  partial stratification, individuals may move from one stratum to another
+  between the first and second sampling events, and strata do not need to be
+  the same between events.
 }
 \examples{
 mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
@@ -73,11 +77,12 @@ powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
 Matt Tyers
 }
 \references{
-Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
+Cohen, J. (1988). Statistical power analysis for the behavioral
+  sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
 
-Code adapted from the 'pwr' package:
-Stephane Champely (2015). pwr: Basic Functions for Power Analysis. R
-package version 1.1-3. https://CRAN.R-project.org/package=pwr
+  Code adapted from the 'pwr' package: Stephane Champely (2015). pwr: Basic
+  Functions for Power Analysis. R package version 1.1-3.
+  https://CRAN.R-project.org/package=pwr
 }
 \seealso{
 \link{consistencytest}, \link{NDarroch}
