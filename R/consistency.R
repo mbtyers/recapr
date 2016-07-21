@@ -547,7 +547,7 @@ print.recapr_strattest <- function(x, ...) {
 #' package version 1.1-3. https://CRAN.R-project.org/package=pwr
 #' @seealso \link{strattest}, \link{Nstrat}
 #' @examples
-#' powstrattest(N=c(10000,20000),n1=c(1000,2000),n2=c(200,200))
+#' powstrattest(N=c(10000,20000), n1=c(1000,2000), n2=c(200,200))
 #' @export
 powstrattest <- function(N,n1,n2,alpha=0.05,sim=TRUE,nsim=100000) {
   if(length(N)!=length(n1) | length(N) != length(n2)) stop("N, n1, and n2 vectors must be the same length.")

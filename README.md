@@ -24,6 +24,8 @@ Tools are provided for estimating, testing, and simulating abundance in a two-ev
 
 * `consistencytest()` and `strattest()` provide the typical chi-squared tests for the consistency of a Petersen-type estimator, and provide evidence of the necessity of a stratified or partially stratified (Darroch-type) estimator
 
+* `powconsistencytest()` and `powstrattest()` provide power estimates for the tests reported in `consistencytest()` and `strattest()`
+
 * `Nstrat()`, `vstrat()`, `sestrat()` and `cistrat()` provide estimation if a completely stratified estimator is used
 
 * `NDarroch()` provides estimation if a spatially or temporally stratified estimator is used, or if strata differs between sampling events

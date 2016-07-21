@@ -40,7 +40,7 @@ Conducts power calculations of the chi-squared tests for the
   stratification setting.
 }
 \examples{
-powstrattest(N=c(10000,20000),n1=c(1000,2000),n2=c(200,200))
+powstrattest(N=c(10000,20000), n1=c(1000,2000), n2=c(200,200))
 }
 \author{
 Matt Tyers

@@ -3,7 +3,7 @@
 * I have read and agree to all CRAN policies.
 
 ## Test environments
-* local Windows 7 install, R 3.3.0 and R-devel
+* local Windows 7 install, R 3.3.1 and R-devel (3.4.0)
 * ubuntu 12.04 (on travis-ci)
 
 ## R CMD check results
