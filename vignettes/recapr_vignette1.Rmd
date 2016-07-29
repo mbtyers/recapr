@@ -61,7 +61,7 @@ ciChapman(n1=100, n2=150, m2=20)
 
 ## Simulation via Random Draws and Plotting Discrete Distributions
 
-Vectors of random draws can be generated for the Chapman, Petersen, or Bailey estimators using `rChapman()`, `rPetersen()`, or `rBailey()` from an assumed value of total abundance (`N`).  This may be useful for simulation.  Sample sizes `n1` and `n2` may be specified, but capture probabilities `p1` and/or `p2' may be used instead.  If so, sample size(s) will first be drawn from a binomial distribution for each random draw before drawing from the abundance estimator. 
+Vectors of random draws can be generated for the Chapman, Petersen, or Bailey estimators using `rChapman()`, `rPetersen()`, or `rBailey()` from an assumed value of total abundance (`N`).  This may be useful for simulation.  Sample sizes `n1` and `n2` may be specified, but capture probabilities `p1` and/or `p2` may be used instead.  If so, sample size(s) will first be drawn from a binomial distribution for each random draw before drawing from the abundance estimator. 
 
 A plotting function is also provided for vectors of discrete (non-continuous) data.  Abundance estimates are calculated from count data, with the result having a non-integer but also non-continuous support.  It is possible that `plotdiscdensity()` may be more appropriate than a kernel density plot and more illustrative than a histogram.
 
@@ -87,7 +87,7 @@ abline(v=500, lwd=2, lty=2)              # Null hypothesis abundance plotted as 
 abline(v=output$estN, lwd=2, col=2)      # Observed (estimated) abundance plotted as a red line
 ```
 
-Power calculation are also done using random draws from an assumed true (alternative) distribution, given the sample sizes of both events.  In `powChapman()`, `powPetersen()`, or `powBailey()`, argument `nullN` specifies the abundance used by the null hypothesis and `trueN` specifies the assumed true abundance used for the power calculation.  The `n1`, and `n2` arguments give the sample sizes and `alternative` gives the direction of the alternative hypothesis, with `alpha` specifying the level of the test to use. 
+Power calculation can also be done using random draws from an assumed true (alternative) distribution, given the sample sizes of both events.  In `powChapman()`, `powPetersen()`, or `powBailey()`, argument `nullN` specifies the abundance used by the null hypothesis and `trueN` specifies the assumed true abundance used for the power calculation.  The `n1`, and `n2` arguments give the sample sizes and `alternative` gives the direction of the alternative hypothesis, with `alpha` specifying the level of the test to use. 
 
 In the example given below, the power is calculated for a one-tailed test of a null abundance of 500, assuming a true abundance of 400.  The test powers are then calculated and plotted for assumed abundances from 250 to 450.  If the true abundance is 325, a one-tailed test of $H_0: N \geq 500$ will have a power of roughly 90%.
 
@@ -95,9 +95,9 @@ In the example given below, the power is calculated for a one-tailed test of a n
 powChapman(nullN=500, trueN=400, n1=100, n2=100, nsim=1000)
 
 Ntotry <- seq(from=250, to=450, by=25)
-pows <- sapply(Ntotry, function(x)
+power <- sapply(Ntotry, function(x)
   powChapman(nullN=500, trueN=x, n1=100, n2=100, nsim=1000))
-plot(Ntotry, pows)  
+plot(Ntotry, power)  
 ```
 
 <a name="Sample Size Recommendation"></a>
@@ -147,11 +147,13 @@ consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), stratamat=mat)
 
 Since the decision to use a simple Petersen-type estimator is based on a failure to reject, the power of the tests used must be considered.  The `powstrattest()` function uses simulation as well as Cohen's non-central $\chi^2$ method to calculate the power of the consistency tests, given assumed values of total abundance by strata and anticipated values of sample sizes by strata and cross-classification probabilities.
 
-The `pmat` argument is a matrix of scaled cross-classification probabilities respective of first- and second-event stratification.  Probabilities do not need to sum to one, as they are rescaled within the function.
+The `pmat` argument is a matrix of assumed movement probabilities between strata, with rows corresponding to first-event strata and columns corresponding to second-event strata, and an additional column corresponding to the probability of NOT being recaptured in the second event.  Values are conditioned on row, that is, by first-event strata.  For example, A `pmat` with a first row equal to `(0.05, 0.1, 0.15, 0.7)` would imply a 5 percent chance that individuals captured in the first-event strata 1 will be recaptured in second-event strata 1, and a 70 percent chance that individuals captured in the first-event strata 1 will not be recaptured in event 2.
+
+Because of the row-wise scaling, specifying a row equal to `(0.05,0.1, 0.15, 0.7)` would be equivalent to that row having values `(1, 2, 3, 14)`.
 
 ```{r}
-mat <- matrix(c(1,2,3,3,2,1), nrow=2, ncol=3, byrow=TRUE)
-powconsistencytest(N1=c(1000,2000), N2=c(800,1000,1200), n1=c(100,200), n2=c(100,100,100), pmat=mat)
+mat <- matrix(c(1,2,3,10,3,2,1,10), nrow=2, ncol=4, byrow=TRUE)
+powconsistencytest(n1=c(100,200), n2=c(100,100,100), pmat=mat)
 ```
 
 ### Complete Stratification

@@ -167,18 +167,16 @@ print.recapr_consistencytest <- function(x, ...) {
 #'   partial stratification, individuals may move from one stratum to another
 #'   between the first and second sampling events, and strata do not need to be
 #'   the same between events.
-#' @param N1 Vector of assumed total abundance, with each element corresponding
-#'   to one stratum, according to first-event stratification.
-#' @param N2 Vector of assumed total abundance, with each element corresponding
-#'   to one stratum, according to second-event stratification.
 #' @param n1 Vector of anticipated n1 counts (sample size in the first event),
 #'   each element corresponding to one stratum.
 #' @param n2 Vector of anticipated n2 counts (sample size in the second event),
 #'   each element corresponding to one stratum.
-#' @param pmat Matrix of assumed cross-classification probabilities between strata, with
+#' @param pmat Matrix of assumed movement probabilities between strata, with
 #'   rows corresponding to first-event strata and columns corresponding to
-#'   second-event strata.  Values do not need to add to 1, and only must be
-#'   proportional to one another as desired.
+#'   second-event strata, and an additional column corresponding to the
+#'   probability of NOT being recaptured in the second event.  Values will be
+#'   standardized by row, that is, by first-event strata.  See note on usage
+#'   below.
 #' @param alpha Significance level for testing.  Defaults to \code{0.05}
 #' @param sim Whether to conduct power calculation by simulation as well as
 #'   Cohen's method.  Defaults to \code{TRUE}.
@@ -202,6 +200,21 @@ print.recapr_consistencytest <- function(x, ...) {
 #'   test} \item{\code{p1test3}} {The alt-hypothesis probabilities for the third
 #'   test} \item{\code{alpha}} {The significance level used} }
 #' @author Matt Tyers
+#' @note The movement probability matrix specified in \code{pmat} is considered
+#'   conditional on each row, that is, first-event strata, with columns
+#'   corresponding to second-event strata and the final column specifying the
+#'   probability of not being recaptured in the second event.  Values do not
+#'   need to sum to one for each row, but will be standardized by the function
+#'   to sum to one.
+#'
+#'   A \code{pmat} with a first row equal to \code{(0.05, 0.1, 0.15, 0.7)} would
+#'   imply a 5 percent chance that individuals captured in the first-event
+#'   strata 1 will be recaptured in second-event strata 1, and a 70 percent
+#'   chance that individuals captured in the first-event strata 1 will not be
+#'   recaptured in event 2.
+#'
+#'   Because of the row-wise scaling, specifying a row equal to \code{(0.05,
+#'   0.1, 0.15, 0.7)} would be equivalent to \code{(1, 2, 3, 14)}.
 #' @importFrom stats pchisq
 #' @importFrom stats qchisq
 #' @importFrom stats rmultinom
@@ -213,46 +226,88 @@ print.recapr_consistencytest <- function(x, ...) {
 #'   https://CRAN.R-project.org/package=pwr
 #' @seealso \link{consistencytest}, \link{NDarroch}
 #' @examples
-#' mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
-#' powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-#'     n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+#' mat <- matrix(c(4,3,2,1,10,3,4,3,2,10,2,3,4,3,10,1,2,3,4,10),
+#'     nrow=4, ncol=5, byrow=TRUE)
+#' powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 #'
-#' mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
-#' powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-#'     n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+#' mat <- matrix(c(4,3,2,1,10,4,3,2,1,10,4,3,2,1,10,4,3,2,1,10),
+#'     nrow=4, ncol=5, byrow=TRUE)
+#' powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 #'
-#' mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=TRUE)
-#' powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-#'     n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+#' mat <- matrix(c(1,1,1,1,10,2,2,2,2,10,3,3,3,3,10,4,4,4,4,10),
+#'     nrow=4, ncol=5, byrow=TRUE)
+#' powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
+#'
+#' mat <- matrix(c(1,1,1,1,10,1,1,1,1,10,1,1,1,1,10,1,1,1,1,10),
+#'     nrow=4, ncol=5, byrow=TRUE)
+#' powconsistencytest(n1=c(50,50,50,50), n2=c(20,30,40,50), pmat=mat)
+#'
+#' mat <- matrix(c(1,1,1,1,5,1,1,1,1,8,1,1,1,1,10,1,1,1,1,15),
+#'     nrow=4, ncol=5, byrow=TRUE)
+#' powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 #' @export
-powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
-  if(sum(N1)!=sum(N2)) stop("N1 total not equal to N2 total")
-  if(length(N1) != length(n1)) stop("Number of strata in N1 not equal to number of strata in n1")
-  if(length(N2) != length(n2)) stop("Number of strata in N2 not equal to number of strata in n2")
-  if(length(N1) != nrow(pmat)) stop("pmat must have the same number of rows as first-event strata")
-  if(length(N2) != ncol(pmat)) stop("pmat must have the same number of columns as second-event strata")
+powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
+  if(length(n1) != nrow(pmat)) stop("pmat must have the same number of rows as first-event strata")
+  if(length(n2) != (ncol(pmat)-1)) stop("pmat must have the same number of columns as second-event strata, plus one")
 
-  nstrata1 <- nrow(pmat)
-  nstrata2 <- ncol(pmat)
+  nstrata1 <- length(n1)
+  nstrata2 <- length(n2)
 
-  p1 <- n1/N1
-  p2 <- n2/N2
-  pboth <- sum(p1)*sum(p2)
-  probmat_both <- pmat/sum(pmat)*pboth
-  probmat_all <- rbind(cbind(probmat_both,p1-rowSums(probmat_both)),c(p2-colSums(probmat_both),((1-sum(p1))*(1-sum(p2)))))
-  if(any(p1<=rowSums(probmat_both))) stop("Negative first-event probabilities generated")
-  if(any(p2<=colSums(probmat_both))) stop("Negative second-event probabilities generated")
+  mvtmat_rowcond <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)         # stratum 1->2 movement probabilities (conditional on row)
+  mvtmat_expected <- mvtmat_rowcond*matrix(n1,nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)         # stratum 1->2 expected counts
+  probmat_expected <- rbind(mvtmat_expected,c((n2-colSums(mvtmat_expected[,1:length(n2)])),0)) # expected counts for all outcomes (except for not captured in either event)
+  # probmat_expected[nrow(probmat_expected),ncol(probmat_expected)] <- N-sum(probmat_expected)
+  # probmat_all <- probmat_expected/sum(probmat_expected)
+  if(any(probmat_expected<0)) {
+    stop("Negative expected counts generated")
+    rownames(probmat_expected) <- 1:nstrata1
+    colnames(probmat_expected) <- c(1:nstrata2,"not recap")
+    print(probmat_expected)
+  }
 
-  probs_all <- as.vector(probmat_all)
+  #   p1 <- n1/N1
+  #   p2 <- n2/N2
+  #   pboth <- sum(p1)*sum(p2)
+  #   probmat_both <- pmat/sum(pmat)*pboth
+  #   probmat_all <- rbind(cbind(probmat_both,p1-rowSums(probmat_both)),c(p2-colSums(probmat_both),((1-sum(p1))*(1-sum(p2)))))
+  #   if(any(p1<=rowSums(probmat_both))) stop("Negative first-event probabilities generated")
+  #   if(any(p2<=colSums(probmat_both))) stop("Negative second-event probabilities generated")
+  #
+  #   probs_all <- as.vector(probmat_all)
+
+  # probmat_mvt <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)                  # stratum 1->2 movement probabilities (conditional on row)
+  # p1not <- 1-(sum(n1)/sum(N1))
+  # p2not <- 1-(sum(n2)/sum(N2))
+  # probmat_mvtall <- cbind(probmat_mvt*(1-p1not),rep(p1not,nstrata1))
+  # expected_mvt <- probmat_mvtall*matrix(n1,nrow=nstrata1,ncol=(nstrata2+1),byrow=F)
+
+  # pboth <- sum(p1)*sum(p2)
+  # probmat_both <- pmat/sum(pmat)*pboth
+
+  # probmat_mvt <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)                  # stratum 1->2 movement probabilities (conditional on row)
+  # probmat_mvtall <- cbind((probmat_mvt*matrix(p1,nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)),(1-p1))   # stratum 1->2 movement probabilities, including not recaptured (conditional on row)
+  # probmat_both_m2 <- probmat_mvt*matrix(pN1*p1/sum(p1_crossclass),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)                    # total cross-classification probabilities (conditional on capture-recapture)
+  # probmat_both <- probmat_both_m2*pboth                   # total cross-classification probabilities
+
+  # probmat_all <- rbind(cbind(probmat_both,p1-rowSums(probmat_both)),c(p2-colSums(probmat_both),((1-sum(p1))*(1-sum(p2)))))
+  # probmat_all <- rbind(cbind(probmat_both,p1_crossclass-rowSums(probmat_both)),c(p2_crossclass-colSums(probmat_both),((1-sum(p1_crossclass))*(1-sum(p2_crossclass)))))
+
+  # if(any(p1<=rowSums(probmat_both))) stop("Negative first-event probabilities generated")
+  # if(any(p2<=colSums(probmat_both))) stop("Negative second-event probabilities generated")
+
+  # if(any(p1_crossclass<=rowSums(probmat_both))) stop("Negative first-event probabilities generated")
+  # if(any(p2_crossclass<=colSums(probmat_both))) stop("Negative second-event probabilities generated")
+
+  # probs_all <- as.vector(probmat_all)
 
   # mixing test - Cohen
-  probmat_mixing <- probmat_all[1:nstrata1,]/sum(probmat_all[1:nstrata1,])
+  probmat_mixing <- probmat_expected[1:nstrata1,]/sum(probmat_expected[1:nstrata1,])
   probmat_mixingnull <- rowSums(probmat_mixing) %*% t(colSums(probmat_mixing))
   w1 <- sqrt(sum((probmat_mixing - probmat_mixingnull)^2/probmat_mixingnull))
   pwr1_c <- pchisq(q=qchisq(alpha,df=(nstrata1-1)*nstrata2,lower.tail=F),df=(nstrata1-1)*nstrata2,ncp=(sum(n2)*(w1^2)),lower.tail=F)
 
   # Equal proportions test - Cohen
-  p1a <- rbind(colSums(probmat_all[1:nstrata1,1:nstrata2]),probmat_all[(nstrata1+1),1:nstrata2])
+  p1a <- rbind(colSums(probmat_expected[1:nstrata1,1:nstrata2]),probmat_expected[(nstrata1+1),1:nstrata2])
   p1a <- p1a/sum(p1a)
   p1anull <- rowSums(p1a) %*% t(colSums(p1a))
   w2 <- sqrt(sum((p1a - p1anull)^2/p1anull))
@@ -260,7 +315,7 @@ powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) 
 
 
   # complete mixing test - Cohen
-  p2a <- rbind(rowSums(probmat_all[1:nstrata1,1:nstrata2]),probmat_all[1:nstrata1,(nstrata2+1)])
+  p2a <- rbind(rowSums(probmat_expected[1:nstrata1,1:nstrata2]),probmat_expected[1:nstrata1,(nstrata2+1)])
   p2a <- p2a/sum(p2a)
   p2anull <- rowSums(p2a) %*% t(colSums(p2a))
   w3 <- sqrt(sum((p2a - p2anull)^2/p2anull))
@@ -345,8 +400,8 @@ powconsistencytest <- function(N1,N2,n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) 
   # return(list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim,pwr1_sim2=pwr1_sim2,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim,pwr2_sim2=pwr2_sim2,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim,pwr3_sim2=pwr3_sim2))
   # return(list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim))
 }
-# mat <- matrix(c(1,2,3,4,2,3,2,1,2,3,2,3),nrow=3,byrow=T)
-# powconsistencytest(pmat=mat,n1=c(12,20,18),n2=c(10,15,12,13),N1=c(200,200,200),N2=c(300,100,100,100),nsim=10000)
+mat <- matrix(c(1,2,3,204,2,3,2,11,2,3,2,13),nrow=3,byrow=T)
+powconsistencytest(pmat=mat,n1=c(12,20,18),n2=c(10,15,12),nsim=10000)
 
 
 #' Print method for consistency test power
@@ -360,10 +415,14 @@ print.recapr_consistencypow <- function(x,...) {
   cat("MIXING TEST",'\n')
   cat("H0: Movement probabilities from stratum i to stratum j are the same among sections (all theta_ij = theta_j)",'\n')
   cat("Sample size (first event): ",x$ntest1,"   Significance level: ",x$alpha,'\n')
-  cat('\n',"Null hypothesis movement probabilities: ",'\n')
+  cat('\n',"Null hypothesis cross-classification probabilities: ",'\n')
   print(round(x$p0test1,4))
-  cat('\n',"Alternative hypothesis movement probabilities: ",'\n')
+  cat('\n',"Alternative hypothesis cross-classification probabilities: ",'\n')
   print(round(x$p1test1,4))
+  cat('\n',"Null hypothesis expected counts: ",'\n')
+  print(round(x$p0test1*x$ntest1,2))
+  cat('\n',"Alternative hypothesis expected counts: ",'\n')
+  print(round(x$p1test1*x$ntest1,2))
   cat('\n')
   if(!is.null(x$pwr1_sim)) cat("Power: ",x$pwr1_c,"   Power (from simulation): ",x$pwr1_sim,'\n','\n','\n')
   else cat("Power: ",x$pwr1_c,'\n','\n','\n')
@@ -375,6 +434,10 @@ print.recapr_consistencypow <- function(x,...) {
   print(round(x$p0test2,4))
   cat('\n',"Alternative hypothesis capture probabilities: ",'\n')
   print(round(x$p1test2,4))
+  cat('\n',"Null hypothesis expected counts: ",'\n')
+  print(round(x$p0test2*x$ntest2,2))
+  cat('\n',"Alternative hypothesis expected counts: ",'\n')
+  print(round(x$p1test2*x$ntest2,2))
   cat('\n')
   if(!is.null(x$pwr2_sim)) cat("Power: ",x$pwr2_c,"   Power (from simulation): ",x$pwr2_sim,'\n','\n','\n')
   else cat("Power: ",x$pwr2_c,'\n','\n','\n')
@@ -386,6 +449,10 @@ print.recapr_consistencypow <- function(x,...) {
   print(round(x$p0test3,4))
   cat('\n',"Alternative hypothesis recapture probabilities: ",'\n')
   print(round(x$p1test3,4))
+  cat('\n',"Null hypothesis expected counts: ",'\n')
+  print(round(x$p0test3*x$ntest3,2))
+  cat('\n',"Alternative hypothesis expected counts: ",'\n')
+  print(round(x$p1test3*x$ntest3,2))
   cat('\n')
   if(!is.null(x$pwr3_sim)) cat("Power: ",x$pwr3_c,"   Power (from simulation): ",x$pwr3_sim,'\n','\n','\n')
   else cat("Power: ",x$pwr3_c,'\n','\n','\n')
@@ -679,3 +746,13 @@ print.recapr_stratpow <- function(x,...) {
 #
 # ks.test(length[inC & !inR], length[inR])
 # # p-value = 0.02074
+
+
+#
+# nsim <- 10000000
+# ntags <- 120
+# nlocations <- 20 # each is 5% of population
+# spawners <- rbinom(nsim,size=ntags,p=0.6)
+# wheredidtheygo <- rmultinom(nsim,size=spawners,prob=rep(1,nlocations))
+# probdetected <- rowMeans(wheredidtheygo>0)
+# mean(probdetected)

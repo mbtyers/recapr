@@ -4,26 +4,18 @@
 \alias{powconsistencytest}
 \title{Power of Consistency Tests, Partial Stratification}
 \usage{
-powconsistencytest(N1, N2, n1, n2, pmat, alpha = 0.05, sim = TRUE,
-  nsim = 10000)
+powconsistencytest(n1, n2, pmat, alpha = 0.05, sim = TRUE, nsim = 10000)
 }
 \arguments{
-\item{N1}{Vector of assumed total abundance, with each element corresponding
-to one stratum, according to first-event stratification.}
-
-\item{N2}{Vector of assumed total abundance, with each element corresponding
-to one stratum, according to second-event stratification.}
-
 \item{n1}{Vector of anticipated n1 counts (sample size in the first event),
 each element corresponding to one stratum.}
 
 \item{n2}{Vector of anticipated n2 counts (sample size in the second event),
 each element corresponding to one stratum.}
 
-\item{pmat}{Matrix of assumed cross-classification probabilities between strata, with
+\item{pmat}{Matrix of assumed movement probabilities between strata, with
 rows corresponding to first-event strata and columns corresponding to
-second-event strata.  Values do not need to add to 1, and only must be
-proportional to one another as desired.}
+second-event strata, and an additional column corresponding to the probability of NOT being recaptured in the second event.  Values will be standardized by row, that is, by first-event strata.  See note on usage below.}
 
 \item{alpha}{Significance level for testing.  Defaults to \code{0.05}}
 
@@ -60,10 +52,17 @@ Conducts power calculations of the chi-squared tests for the
   between the first and second sampling events, and strata do not need to be
   the same between events.
 }
+\note{
+The movement probability matrix specified in \code{pmat} is considered conditional on each row, that is, first-event strata, with columns corresponding to second-event strata and the final column specifying the probability of not being recaptured in the second event.  Values do not need to sum to one for each row, but will be standardized by the function to sum to one.
+
+A \code{pmat} with a first row equal to \code{(0.05, 0.1, 0.15, 0.7)} would imply a 5 percent chance that individuals captured in the first-event strata 1 will be recaptured in second-event strata 1, and a 70 percent chance that individuals captured in the first-event strata 1 will not be recaptured in event 2.
+
+Because of the row-wise scaling, specifying a row equal to \code{(0.05, 0.1, 0.15, 0.7)} would be equivalent to \code{(1, 2, 3, 14)}.
+}
 \examples{
 mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
 powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-    n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+    n1=c(300,300,300,300), n2=c(200,200,200,200), pmat=mat)
 
 mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
 powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
@@ -71,7 +70,7 @@ powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
 
 mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=TRUE)
 powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-    n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+    n1=c(150,150,150,150), n2=c(50,100,150,200), pmat=mat)
 }
 \author{
 Matt Tyers
