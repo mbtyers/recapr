@@ -17,11 +17,11 @@
 #'   different ways (by time, area, etc.)  If stratification was the same in
 #'   both events such that individuals could not move from one strata to another
 #'   (such as by size or gender), use of \link{strattest} is recommended.
-#' @param n1counts A vector of the total sample sizes in the first event, by
-#'   strata.  For example, setting \code{n1counts=c(20,30,40)} would imply 20
+#' @param n1 A vector of the total sample sizes in the first event, by
+#'   strata.  For example, setting \code{n1=c(20,30,40)} would imply 20
 #'   individuals captured and marked in stratum 1, 30 in stratum 2, and 40 in
 #'   stratum 3.
-#' @param n2counts A vector of the total sample sizes in the second event, by
+#' @param n2 A vector of the total sample sizes in the second event, by
 #'   strata.
 #' @param m2strata1 A vector of the first-event stratum membership of each
 #'   recaptured individual.  Only values \code{1, 2, 3, ...} are allowed.  May
@@ -61,17 +61,17 @@
 #' @seealso \link{strattest}, \link{NDarroch}
 #' @importFrom stats chisq.test
 #' @examples
-#' consistencytest(n1counts=c(15,12,6), n2counts=c(12,9,10,8),
+#' consistencytest(n1=c(15,12,6), n2=c(12,9,10,8),
 #'    m2strata1=c(1,1,1,1,1,2,2,2,3,3),
 #'    m2strata2=c(1,1,3,3,4,1,2,4,1,3),
 #'    simulate.p.value=TRUE)
 #'
 #' mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
-#' consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), stratamat=mat)
+#' consistencytest(n1=c(284,199), n2=c(347,3616,1489), stratamat=mat)
 #' @export
-consistencytest <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, stratamat=NULL,...) {
+consistencytest <- function(n1, n2, m2strata1=NULL, m2strata2=NULL, stratamat=NULL,...) {
   if(!is.null(stratamat)) {
-    if((nrow(stratamat) != length(n1counts)) | (ncol(stratamat) != length(n2counts))) stop("Dimension mismatch in stratamat - must have rows corresponding to n1 strata and columns corresponding to n1 strata")
+    if((nrow(stratamat) != length(n1)) | (ncol(stratamat) != length(n2))) stop("Dimension mismatch in stratamat - must have rows corresponding to n1 strata and columns corresponding to n1 strata")
   }
   if(is.null(stratamat)) {
     if(is.null(m2strata1) | is.null(m2strata2)) stop("recapture strata must be specified, either with stratamat or m2strata1 and m2strata2 together")
@@ -81,20 +81,20 @@ consistencytest <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, 
     if(sum(m2strata2-round(m2strata2))!=0) stop("m2strata2 values must be positive integers")
     if(any(m2strata1<1)) stop("m2strata1 values must be positive integers")
     if(any(m2strata2<1)) stop("m2strata2 values must be positive integers")
-    if(max(m2strata1)>length(n1counts)) stop("strata values larger than count vector in event 1")
-    if(max(m2strata2)>length(n2counts)) stop("strata values larger than count vector in event 2")
+    if(max(m2strata1)>length(n1)) stop("strata values larger than count vector in event 1")
+    if(max(m2strata2)>length(n2)) stop("strata values larger than count vector in event 2")
     if(length(m2strata1)!=length(m2strata2)) stop("m2strata1 and m2strata2 must be the same length (each element corresponding to an individual)")
-    stratamat <- matrix(NA,nrow=length(n1counts),ncol=length(n2counts))
-    for(i in 1:length(n1counts)) {
-      for(j in 1:length(n2counts)) {
+    stratamat <- matrix(NA,nrow=length(n1),ncol=length(n2))
+    for(i in 1:length(n1)) {
+      for(j in 1:length(n2)) {
         stratamat[i,j] <- sum(m2strata1==i & m2strata2==j)
       }
     }
   }
   # stratamat <- table(m2strata1,m2strata2)
-  mix_test_table <- cbind(stratamat,n1counts - rowSums(stratamat))
-  rownames(mix_test_table) <- 1:length(n1counts)
-  colnames(mix_test_table) <- c(1:length(n2counts),"not recaptured")
+  mix_test_table <- cbind(stratamat,n1 - rowSums(stratamat))
+  rownames(mix_test_table) <- 1:length(n1)
+  colnames(mix_test_table) <- c(1:length(n2),"not recaptured")
   # cat('\n',"Mixing test",'\n')
   # cat("H0: Movement probabilities from stratum i to stratum j are the same among sections (all theta_ij = theta_j)",'\n','\n')
   # print(mix_test_table)
@@ -102,10 +102,10 @@ consistencytest <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, 
   # cat('\n',"X-squared: ",x$statistic,"  df: ",x$parameter,"  p-val: ",x$p.value,'\n','\n')
 
   m22 <- colSums(stratamat)
-  unmarked <- n2counts-m22
+  unmarked <- n2-m22
   eq_prop_table <- rbind(m22,unmarked)
   rownames(eq_prop_table) <- c("recaptured","unmarked")
-  colnames(eq_prop_table) <- 1:length(n2counts)
+  colnames(eq_prop_table) <- 1:length(n2)
   # cat('\n',"Equal proportions test",'\n')
   # cat("H0: Equal probability of capture among n1 strata (all p_i equal)",'\n','\n')
   # print(eq_prop_table)
@@ -113,10 +113,10 @@ consistencytest <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, 
   # cat('\n',"X-squared: ",x$statistic,"  df: ",x$parameter,"  p-val: ",x$p.value,'\n','\n')
 
   m21 <- rowSums(stratamat)
-  notrecap <- n1counts-m21
+  notrecap <- n1-m21
   complete_mix_table <- rbind(m21,notrecap)
   rownames(complete_mix_table) <- c("recaptured","not recaptured")
-  colnames(complete_mix_table) <- 1:length(n1counts)
+  colnames(complete_mix_table) <- 1:length(n1)
   # cat('\n',"Complete mixing test",'\n')
   # cat("H0: Equal probability of recapture among n2 strata (all p_j equal)",'\n','\n')
   # print(complete_mix_table)
@@ -158,7 +158,7 @@ print.recapr_consistencytest <- function(x, ...) {
   # print(x=...)
 }
 
-#consistencytest(n1counts=c(15,12,6), n2counts=c(12,9,10,8),m2strata1=c(1,1,1,1,1,2,2,2,3,3),m2strata2=c(1,1,3,3,4,1,2,4,1,3))
+#consistencytest(n1=c(15,12,6), n2=c(12,9,10,8),m2strata1=c(1,1,1,1,1,2,2,2,3,3),m2strata2=c(1,1,3,3,4,1,2,4,1,3))
 
 #' Power of Consistency Tests, Partial Stratification
 #' @description Conducts power calculations of the chi-squared tests for the

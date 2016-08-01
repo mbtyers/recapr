@@ -81,7 +81,7 @@ test_that("n2",{
 })
 
 mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
-ctest <- consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), stratamat=mat)
+ctest <- consistencytest(n1=c(284,199), n2=c(347,3616,1489), stratamat=mat)
 stest <- strattest(n1=c(100,100), n2=c(50,200), m2=c(20,15))
 test_that("consistency",{
   expect_equal(length(ctest), 12, tolerance=0.001)
@@ -98,12 +98,12 @@ test_that("consistency",{
   expect_equal(ctest$test3_df,  1, tolerance=0.001)
   expect_equal(ctest$test3_pval, 0.5724538, tolerance=0.001)
 
-  expect_error(consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489)),"recapture strata must be specified, either with stratamat or m2strata1 and m2strata2 together")
-  expect_error(consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2),m2strata2=c(1,2,3)),"m2strata1 and m2strata2 must be the same length")# (each element corresponding to an individual)")
-  expect_error(consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,4),m2strata2=c(1,2,3)),"strata values larger than count vector in event 1")
-  expect_error(consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,2.2),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
-  expect_error(consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,"a"),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
-  expect_error(consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,-1),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
+  expect_error(consistencytest(n1=c(284,199), n2=c(347,3616,1489)),"recapture strata must be specified, either with stratamat or m2strata1 and m2strata2 together")
+  expect_error(consistencytest(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2),m2strata2=c(1,2,3)),"m2strata1 and m2strata2 must be the same length")# (each element corresponding to an individual)")
+  expect_error(consistencytest(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,4),m2strata2=c(1,2,3)),"strata values larger than count vector in event 1")
+  expect_error(consistencytest(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,2.2),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
+  expect_error(consistencytest(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,"a"),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
+  expect_error(consistencytest(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,-1),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
 
   expect_equal(length(stest), 12, tolerance=0.001)
   expect_equal(sum(stest$event1_table), 250, tolerance=0.001)
@@ -191,7 +191,7 @@ test_that("stratified",{
 })
 
 mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)
-darr <- NDarroch(n1counts=c(484,1468,399), n2counts=c(847,6616,2489), stratamat=mat)
+darr <- NDarroch(n1=c(484,1468,399), n2=c(847,6616,2489), stratamat=mat)
 test_that("Darroch",{
   expect_equal(length(darr), 6, tolerance=0.001)
   expect_equal(length(darr$Nhat_strata1), 3, tolerance=0.01)
@@ -209,10 +209,10 @@ test_that("Darroch",{
   expect_equal(darr$Nhat_strata2[1], 6360.409, tolerance=0.01)
   expect_equal(darr$se_Nhat_strata2[1], 848.4842, tolerance=0.01)
 
-  expect_error(NDarroch(n1counts=c(284,199), n2counts=c(347,3616,1489)),"recapture strata must be specified, either with stratamat or m2strata1 and m2strata2 together")
-  expect_error(NDarroch(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2),m2strata2=c(1,2,3)),"m2strata1 and m2strata2 must be the same length")# (each element corresponding to an individual)")
-  expect_error(NDarroch(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,4),m2strata2=c(1,2,3)),"strata values larger than count vector in event 1")
-  expect_error(NDarroch(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,2.2),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
-  expect_error(NDarroch(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,"a"),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
-  expect_error(NDarroch(n1counts=c(284,199), n2counts=c(347,3616,1489), m2strata1=c(1,2,-1),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
+  expect_error(NDarroch(n1=c(284,199), n2=c(347,3616,1489)),"recapture strata must be specified, either with stratamat or m2strata1 and m2strata2 together")
+  expect_error(NDarroch(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2),m2strata2=c(1,2,3)),"m2strata1 and m2strata2 must be the same length")# (each element corresponding to an individual)")
+  expect_error(NDarroch(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,4),m2strata2=c(1,2,3)),"strata values larger than count vector in event 1")
+  expect_error(NDarroch(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,2.2),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
+  expect_error(NDarroch(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,"a"),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
+  expect_error(NDarroch(n1=c(284,199), n2=c(347,3616,1489), m2strata1=c(1,2,-1),m2strata2=c(1,2,3)),"m2strata1 values must be positive integers")
 })

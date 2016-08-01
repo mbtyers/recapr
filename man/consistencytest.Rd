@@ -4,16 +4,16 @@
 \alias{consistencytest}
 \title{Consistency Tests for the Abundance Estimator, Partial Stratification}
 \usage{
-consistencytest(n1counts, n2counts, m2strata1 = NULL, m2strata2 = NULL,
+consistencytest(n1, n2, m2strata1 = NULL, m2strata2 = NULL,
   stratamat = NULL, ...)
 }
 \arguments{
-\item{n1counts}{A vector of the total sample sizes in the first event, by
-strata.  For example, setting \code{n1counts=c(20,30,40)} would imply 20
+\item{n1}{A vector of the total sample sizes in the first event, by
+strata.  For example, setting \code{n1=c(20,30,40)} would imply 20
 individuals captured and marked in stratum 1, 30 in stratum 2, and 40 in
 stratum 3.}
 
-\item{n2counts}{A vector of the total sample sizes in the second event, by
+\item{n2}{A vector of the total sample sizes in the second event, by
 strata.}
 
 \item{m2strata1}{A vector of the first-event stratum membership of each
@@ -79,13 +79,13 @@ Any Petersen-type estimator (such as this) depends on a set of
   reported in the second event }
 }
 \examples{
-consistencytest(n1counts=c(15,12,6), n2counts=c(12,9,10,8),
+consistencytest(n1=c(15,12,6), n2=c(12,9,10,8),
    m2strata1=c(1,1,1,1,1,2,2,2,3,3),
    m2strata2=c(1,1,3,3,4,1,2,4,1,3),
    simulate.p.value=TRUE)
 
 mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
-consistencytest(n1counts=c(284,199), n2counts=c(347,3616,1489), stratamat=mat)
+consistencytest(n1=c(284,199), n2=c(347,3616,1489), stratamat=mat)
 }
 \author{
 Matt Tyers
