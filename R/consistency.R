@@ -214,7 +214,7 @@ print.recapr_consistencytest <- function(x, ...) {
 #'   recaptured in event 2.
 #'
 #'   Because of the row-wise scaling, specifying a row equal to \code{(0.05,
-#'   0.1, 0.15, 0.7)} would be equivalent to \code{(1, 2, 3, 14)}.
+#'   0.1, 0.15, 0.7)} would be equivalent to that row having values \code{(1, 2, 3, 14)}.
 #' @importFrom stats pchisq
 #' @importFrom stats qchisq
 #' @importFrom stats rmultinom

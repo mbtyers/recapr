@@ -15,7 +15,10 @@ each element corresponding to one stratum.}
 
 \item{pmat}{Matrix of assumed movement probabilities between strata, with
 rows corresponding to first-event strata and columns corresponding to
-second-event strata, and an additional column corresponding to the probability of NOT being recaptured in the second event.  Values will be standardized by row, that is, by first-event strata.  See note on usage below.}
+second-event strata, and an additional column corresponding to the
+probability of NOT being recaptured in the second event.  Values will be
+standardized by row, that is, by first-event strata.  See note on usage
+below.}
 
 \item{alpha}{Significance level for testing.  Defaults to \code{0.05}}
 
@@ -53,24 +56,42 @@ Conducts power calculations of the chi-squared tests for the
   the same between events.
 }
 \note{
-The movement probability matrix specified in \code{pmat} is considered conditional on each row, that is, first-event strata, with columns corresponding to second-event strata and the final column specifying the probability of not being recaptured in the second event.  Values do not need to sum to one for each row, but will be standardized by the function to sum to one.
+The movement probability matrix specified in \code{pmat} is considered
+  conditional on each row, that is, first-event strata, with columns
+  corresponding to second-event strata and the final column specifying the
+  probability of not being recaptured in the second event.  Values do not
+  need to sum to one for each row, but will be standardized by the function
+  to sum to one.
 
-A \code{pmat} with a first row equal to \code{(0.05, 0.1, 0.15, 0.7)} would imply a 5 percent chance that individuals captured in the first-event strata 1 will be recaptured in second-event strata 1, and a 70 percent chance that individuals captured in the first-event strata 1 will not be recaptured in event 2.
+  A \code{pmat} with a first row equal to \code{(0.05, 0.1, 0.15, 0.7)} would
+  imply a 5 percent chance that individuals captured in the first-event
+  strata 1 will be recaptured in second-event strata 1, and a 70 percent
+  chance that individuals captured in the first-event strata 1 will not be
+  recaptured in event 2.
 
-Because of the row-wise scaling, specifying a row equal to \code{(0.05, 0.1, 0.15, 0.7)} would be equivalent to \code{(1, 2, 3, 14)}.
+  Because of the row-wise scaling, specifying a row equal to \code{(0.05,
+  0.1, 0.15, 0.7)} would be equivalent to that row having values \code{(1, 2, 3, 14)}.
 }
 \examples{
-mat <- matrix(c(4,3,2,1,3,4,3,2,2,3,4,3,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
-powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-    n1=c(300,300,300,300), n2=c(200,200,200,200), pmat=mat)
+mat <- matrix(c(4,3,2,1,10,3,4,3,2,10,2,3,4,3,10,1,2,3,4,10),
+    nrow=4, ncol=5, byrow=TRUE)
+powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 
-mat <- matrix(c(1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4), nrow=4, ncol=4, byrow=TRUE)
-powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-    n1=c(150,150,150,150), n2=c(150,150,150,150), pmat=mat)
+mat <- matrix(c(4,3,2,1,10,4,3,2,1,10,4,3,2,1,10,4,3,2,1,10),
+    nrow=4, ncol=5, byrow=TRUE)
+powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 
-mat <- matrix(c(1,1,1,1,2,2,2,2,3,3,3,3,4,4,4,4), nrow=4, ncol=4, byrow=TRUE)
-powconsistencytest(N1=c(2000,2000,2000,2000), N2=c(2000,2000,2000,2000),
-    n1=c(150,150,150,150), n2=c(50,100,150,200), pmat=mat)
+mat <- matrix(c(1,1,1,1,10,2,2,2,2,10,3,3,3,3,10,4,4,4,4,10),
+    nrow=4, ncol=5, byrow=TRUE)
+powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
+
+mat <- matrix(c(1,1,1,1,10,1,1,1,1,10,1,1,1,1,10,1,1,1,1,10),
+    nrow=4, ncol=5, byrow=TRUE)
+powconsistencytest(n1=c(50,50,50,50), n2=c(20,30,40,50), pmat=mat)
+
+mat <- matrix(c(1,1,1,1,5,1,1,1,1,8,1,1,1,1,10,1,1,1,1,15),
+    nrow=4, ncol=5, byrow=TRUE)
+powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 }
 \author{
 Matt Tyers
