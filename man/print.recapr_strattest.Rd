@@ -17,4 +17,3 @@ Print method for stratification test
 \author{
 Matt Tyers
 }
-

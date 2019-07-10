@@ -17,4 +17,3 @@ Print method for consistency test power
 \author{
 Matt Tyers
 }
-

@@ -61,11 +61,10 @@ twosided <- 500 + c(-1,1)*abs(500-output$estN)
 abline(v=twosided, lwd=2, col=2)
 abline(v=500, lwd=2, lty=2)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NBailey}, \link{vBailey}, \link{seBailey}, \link{rBailey},
   \link{powBailey}, \link{ciBailey}
 }
-
+\author{
+Matt Tyers
+}

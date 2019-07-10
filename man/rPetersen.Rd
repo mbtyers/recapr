@@ -50,11 +50,10 @@ Any Petersen-type estimator (such as this) depends on a set of
 draws <- rPetersen(length=100000, N=500, n1=100, n2=100)
 plotdiscdensity(draws)  #plots the density of a vector of discrete values
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NPetersen}, \link{vPetersen}, \link{sePetersen}, \link{pPetersen},
   \link{powPetersen}, \link{ciPetersen}
 }
-
+\author{
+Matt Tyers
+}

@@ -48,11 +48,10 @@ pows <- sapply(Ntotry, function(x)
   powPetersen(nullN=500, trueN=x, n1=100, n2=100, nsim=1000))
 plot(Ntotry, pows)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NPetersen}, \link{vPetersen}, \link{sePetersen}, \link{rPetersen},
   \link{pPetersen}, \link{ciPetersen}
 }
-
+\author{
+Matt Tyers
+}

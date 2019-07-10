@@ -17,4 +17,3 @@ Print method for consistency test
 \author{
 Matt Tyers
 }
-

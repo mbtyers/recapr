@@ -48,11 +48,10 @@ pows <- sapply(Ntotry, function(x)
   powChapman(nullN=500, trueN=x, n1=100, n2=100, nsim=1000))
 plot(Ntotry, pows)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NChapman}, \link{vChapman}, \link{seChapman}, \link{rChapman},
   \link{pChapman}, \link{ciChapman}
 }
-
+\author{
+Matt Tyers
+}

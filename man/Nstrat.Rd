@@ -37,11 +37,10 @@ It is possible that even the stratified estimate may be biased if
 \examples{
 Nstrat(n1=c(100,200), n2=c(100,500), m2=c(10,10))
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{strattest}, \link{rstrat}, \link{vstrat},  \link{sestrat}, \link{cistrat},
   \link{NChapman}, \link{NPetersen}, \link{NBailey}
 }
-
+\author{
+Matt Tyers
+}

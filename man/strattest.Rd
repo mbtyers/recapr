@@ -71,10 +71,9 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 strattest(n1=c(100,100), n2=c(50,200), m2=c(20,15))
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{powstrattest}, \link{Nstrat}, \link{consistencytest}
 }
-
+\author{
+Matt Tyers
+}

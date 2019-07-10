@@ -38,11 +38,10 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 vBailey(n1=100, n2=100, m2=20)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NBailey}, \link{seBailey}, \link{rBailey}, \link{pBailey},
   \link{powBailey}, \link{ciBailey}
 }
-
+\author{
+Matt Tyers
+}

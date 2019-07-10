@@ -4,7 +4,8 @@
 \alias{powconsistencytest}
 \title{Power of Consistency Tests, Partial Stratification}
 \usage{
-powconsistencytest(n1, n2, pmat, alpha = 0.05, sim = TRUE, nsim = 10000)
+powconsistencytest(n1, n2, pmat, alpha = 0.05, sim = TRUE,
+  nsim = 10000)
 }
 \arguments{
 \item{n1}{Vector of anticipated n1 counts (sample size in the first event),
@@ -93,9 +94,6 @@ mat <- matrix(c(1,1,1,1,5,1,1,1,1,8,1,1,1,1,10,1,1,1,1,15),
     nrow=4, ncol=5, byrow=TRUE)
 powconsistencytest(n1=c(50,50,50,50), n2=c(50,50,50,50), pmat=mat)
 }
-\author{
-Matt Tyers
-}
 \references{
 Cohen, J. (1988). Statistical power analysis for the behavioral
   sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
@@ -107,4 +105,6 @@ Cohen, J. (1988). Statistical power analysis for the behavioral
 \seealso{
 \link{consistencytest}, \link{NDarroch}
 }
-
+\author{
+Matt Tyers
+}

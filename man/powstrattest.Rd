@@ -42,9 +42,6 @@ Conducts power calculations of the chi-squared tests for the
 \examples{
 powstrattest(N=c(10000,20000), n1=c(1000,2000), n2=c(200,200))
 }
-\author{
-Matt Tyers
-}
 \references{
 Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
 
@@ -55,4 +52,6 @@ package version 1.1-3. https://CRAN.R-project.org/package=pwr
 \seealso{
 \link{strattest}, \link{Nstrat}
 }
-
+\author{
+Matt Tyers
+}

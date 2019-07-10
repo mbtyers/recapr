@@ -43,10 +43,9 @@ draws <- rstrat(length=100000, N=c(5000,10000), n1=c(500,200), n2=c(500,200))
 plotdiscdensity(draws)  #plots the density of a vector of discrete values
 mean(draws)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{strattest}, \link{Nstrat},  \link{vstrat}, \link{cistrat},\link{NChapman}, \link{NPetersen}, \link{NBailey}
 }
-
+\author{
+Matt Tyers
+}

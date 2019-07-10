@@ -87,10 +87,9 @@ consistencytest(n1=c(15,12,6), n2=c(12,9,10,8),
 mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
 consistencytest(n1=c(284,199), n2=c(347,3616,1489), stratamat=mat)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{strattest}, \link{NDarroch}
 }
-
+\author{
+Matt Tyers
+}

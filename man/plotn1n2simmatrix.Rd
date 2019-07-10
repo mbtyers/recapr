@@ -46,10 +46,9 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 plotn1n2simmatrix(N=10000, nsim=2000)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{n2RR}, \link{plotn2sim}
 }
-
+\author{
+Matt Tyers
+}

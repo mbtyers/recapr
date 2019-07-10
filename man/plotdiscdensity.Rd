@@ -25,4 +25,3 @@ plotdiscdensity(draws)  #plots the density of a vector of discrete values
 \author{
 Matt Tyers
 }
-

@@ -39,9 +39,6 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 NChapman(n1=100, n2=100, m2=20)
 }
-\author{
-Matt Tyers
-}
 \references{
 Chapman, D.G. (1951). Some properties of the hypergeometric distribution with applications to zoological censuses.  \emph{Univ. Calif. Public. Stat.} \strong{1}, 131-60.
 }
@@ -49,4 +46,6 @@ Chapman, D.G. (1951). Some properties of the hypergeometric distribution with ap
 \link{NPetersen}, \link{NBailey}, \link{vChapman}, \link{seChapman}, \link{rChapman}, \link{pChapman},
   \link{powChapman}, \link{ciChapman}
 }
-
+\author{
+Matt Tyers
+}

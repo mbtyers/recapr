@@ -38,11 +38,10 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 vChapman(n1=100, n2=100, m2=20)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NChapman}, \link{seChapman}, \link{rChapman}, \link{pChapman},
   \link{powChapman}, \link{ciChapman}
 }
-
+\author{
+Matt Tyers
+}

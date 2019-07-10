@@ -42,13 +42,12 @@ mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)
 
 NDarroch(n1counts=c(484,1468,399), n2counts=c(847,6616,2489), stratamat=mat)
 }
-\author{
-Matt Tyers
-}
 \references{
 Darroch, J.N. (1961). The two-sample capture-recapture census when tagging and sampling are stratified.  \emph{Biometrika} \strong{48}, 241-60.
 }
 \seealso{
 \link{consistencytest}
 }
-
+\author{
+Matt Tyers
+}

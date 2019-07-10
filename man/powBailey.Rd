@@ -48,11 +48,10 @@ pows <- sapply(Ntotry, function(x)
   powBailey(nullN=500, trueN=x, n1=100, n2=100, nsim=1000))
 plot(Ntotry, pows)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NBailey}, \link{vBailey}, \link{seBailey}, \link{rBailey},
   \link{pBailey}, \link{ciBailey}
 }
-
+\author{
+Matt Tyers
+}

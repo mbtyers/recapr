@@ -17,4 +17,3 @@ Print method for stratification test power
 \author{
 Matt Tyers
 }
-

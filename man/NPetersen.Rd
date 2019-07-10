@@ -38,11 +38,10 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 NPetersen(n1=100, n2=100, m2=20)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NChapman}, \link{NBailey}, \link{vPetersen}, \link{sePetersen}, \link{rPetersen}, \link{pPetersen},
   \link{powPetersen}, \link{ciPetersen}
 }
-
+\author{
+Matt Tyers
+}

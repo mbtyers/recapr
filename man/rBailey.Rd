@@ -50,11 +50,10 @@ Any Petersen-type estimator (such as this) depends on a set of
 draws <- rBailey(length=100000, N=500, n1=100, n2=100)
 plotdiscdensity(draws)  #plots the density of a vector of discrete values
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{NBailey}, \link{vBailey}, \link{seBailey}, \link{pBailey},
   \link{powBailey}, \link{ciBailey}
 }
-
+\author{
+Matt Tyers
+}

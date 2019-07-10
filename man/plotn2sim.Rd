@@ -5,7 +5,8 @@
 \title{Mark-Recapture Sample Size Via Simulation}
 \usage{
 plotn2sim(N, n1, conf = c(0.99, 0.95, 0.85, 0.8, 0.75), n2range = NULL,
-  n2step = NULL, estimator = "Chapman", nsim = 10000, accrange = 1, ...)
+  n2step = NULL, estimator = "Chapman", nsim = 10000, accrange = 1,
+  ...)
 }
 \arguments{
 \item{N}{The best guess at true abundance}
@@ -53,10 +54,9 @@ Any Petersen-type estimator (such as this) depends on a set of
 \examples{
 plotn2sim(N=1000, n1=100)
 }
-\author{
-Matt Tyers
-}
 \seealso{
 \link{n2RR}, \link{plotn1n2simmatrix}
 }
-
+\author{
+Matt Tyers
+}

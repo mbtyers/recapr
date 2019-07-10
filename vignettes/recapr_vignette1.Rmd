@@ -1,5 +1,5 @@
 ---
-title: "Estimating, Testing, and Simulating Abundance in a Mark-Recapture with `recapr`"
+title: "Estimating, Testing, and Simulating Abundance in a Mark-Recapture Experiment with `recapr`"
 author: "Matt Tyers"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -51,7 +51,7 @@ seChapman(n1=100, n2=150, m2=20)   # standard error
 
 ## Confidence Intervals 
 
-Confidence intervals can be generated for the Chapman, Petersen, or Bailey estimators using `ciChapman()`, `ciPetersen()`, or `ciBailey()`.  A point estimate is returned as well as two confidence intervals, one using a Wald-type Normal-distribution assumption, and the other calculated by means of bootstrapping.  The bootstrapping interval is likely to have more appropriate bounds than the Normal interval, and has demonstrated better coverage in testing.
+Confidence intervals can be generated for the Chapman, Petersen, or Bailey estimators using `ciChapman()`, `ciPetersen()`, or `ciBailey()`.  A point estimate is returned as well as two confidence intervals, one using a Wald-type Normal-distribution assumption, and the other calculated by means of bootstrapping capture histories.  The bootstrapping interval is likely to have more appropriate bounds than the Normal interval, and has demonstrated better coverage in testing via simulation.
 
 ```{r}
 ciChapman(n1=100, n2=150, m2=20)
@@ -61,9 +61,9 @@ ciChapman(n1=100, n2=150, m2=20)
 
 ## Simulation via Random Draws and Plotting Discrete Distributions
 
-Vectors of random draws can be generated for the Chapman, Petersen, or Bailey estimators using `rChapman()`, `rPetersen()`, or `rBailey()` from an assumed value of total abundance (`N`).  This may be useful for simulation.  Sample sizes `n1` and `n2` may be specified, but capture probabilities `p1` and/or `p2` may be used instead.  If so, sample size(s) will first be drawn from a binomial distribution for each random draw before drawing from the abundance estimator. 
+Vectors of random draws can be generated for the Chapman, Petersen, or Bailey estimators using `rChapman()`, `rPetersen()`, or `rBailey()` from an assumed value of total abundance (`N`).  This may be useful for simulation.  Sample sizes `n1` and `n2` may be specified, but capture probabilities `p1` and/or `p2` may be used instead.  If so, sample size(s) will first be drawn from a binomial distribution for each random draw before drawing from the abundance estimator.  This will result in a greater degree of dispersion, but may be appropriate in some cases.
 
-A plotting function is also provided for vectors of discrete (non-continuous) data.  Abundance estimates are calculated from count data, with the result having a non-integer but also non-continuous support.  It is possible that `plotdiscdensity()` may be more appropriate than a kernel density plot and more illustrative than a histogram.
+A plotting function is also provided for vectors of discrete (non-continuous) data.  Abundance estimates are calculated from count data, with the result having a non-integer but also non-continuous support.  It is possible that `plotdiscdensity()` may be more appropriate for plotting a discrete (non-continuous) density than a kernel density plot or histogram, as the discontinuity is made explicit.
 
 ```{r,fig.width=7, fig.height=4}
 draws <- rChapman(length=10000, N=1500, n1=100, n2=120)
@@ -87,7 +87,7 @@ abline(v=500, lwd=2, lty=2)              # Null hypothesis abundance plotted as 
 abline(v=output$estN, lwd=2, col=2)      # Observed (estimated) abundance plotted as a red line
 ```
 
-Power calculation can also be done with `powChapman()`, `powPetersen()`, or `powBailey()`, which use random draws from an assumed true (alternative) distribution, given the sample sizes of both events.  The `nullN` argument specifies the abundance used by the null hypothesis, and the `trueN` argument specifies the assumed true abundance used for the power calculation.  The `n1` and `n2` arguments give the sample sizes, and `alternative` gives the direction of the alternative hypothesis, with `alpha` specifying the level of the test to use. 
+Power calculation can be done with `powChapman()`, `powPetersen()`, or `powBailey()`, which use random draws from an assumed true (alternative) distribution, given the sample sizes of both events.  The `nullN` argument specifies the abundance used by the null hypothesis, and the `trueN` argument specifies the assumed true abundance used for the power calculation.  The `n1` and `n2` arguments give the sample sizes, and `alternative` gives the direction of the alternative hypothesis (defaults to `"less"`), with `alpha` specifying the level of the test to use. 
 
 In the example given below, the power is calculated for a one-tailed test of a null abundance of 500, assuming a true abundance of 400.  The test powers are then calculated and plotted for assumed abundances from 250 to 450.  If the true abundance is 325, a one-tailed test of $H_0: N \geq 500$ will have a power of roughly 90%.
 
@@ -104,7 +104,9 @@ plot(Ntotry, power)
 
 ## Sample Size Recommendation
 
-Given the value of the sample size in one sampling event and a best-guess at the true abundance, a recommendation for the sample size in the other sampling event can be calculated from the desired confidence and relative accuracy with the methods of Robson & Regier using `n2RR()`.  Recommendations for sample size are provided for two scenarios: if the size of the other sample is as specified, and if the two sample sizes are equal, which is the most efficient for sampling. The example below gives the full output for all allowed values of confidence and relative accuracy.
+Given a best-guess at the true abundance and possibly the sample size in one sampling event, a recommendation for the sample size(s) can be calculated from the desired confidence and relative accuracy with the methods of Robson & Regier (1964) using `n2RR()`.  Desired estimate confidence and accuracy (elsewhere termed "precision") of 95% and 10%, respectively, is analogous to estimation "such that the estimated abundance will be within 10% of the true value 95% of the time".
+
+Recommendations for sample size are provided for two scenarios: if the size of the other sample is as specified, and if the two sample sizes are equal, which is the most efficient for sampling in terms of total sample size ($n_1+n_2$). The example below gives the full output for all allowed values of confidence and relative accuracy.
 
 ```{r}
 n2RR(N=1000, n1=100)
@@ -132,22 +134,22 @@ plotn1n2simmatrix(N=1000)
 
 ## Tests of Consistency for the Estimator
 
-### Partial Stratification
+### Testing the Need for Partial Stratification
 
 For a simple Petersen-type estimator of abundance to be consistent, one of three conditions must be true: either there must be complete mixing in the time between events, or the probability of capture must be equal for all individuals in the first event, or the probability of capture must be equal for all individuals in the second event.  This is typically investigated by means of a set of $\chi^2$ tests for each condition, with failure to reject the null hypothesis of any of the tests indicating that a simple Petersen-type estimator is reasonable to use.  If the null hypotheses are rejected in all tests, a completely stratified or partially stratified (Darroch-type) estimator should be used.
 
 The `consistencytest()` function is provided for the instance that sampling in both events is stratified in such a way that movement between strata may occur, such as spatial or temporal stratification.  The stratification used in events 1 and 2 do not need to be the same.  Arguments `n1` and `n2` accept vectors of sample sizes in each event by strata.  Recaptures of marked individuals can be specified in one of two ways: either as vectors of strata membership in `m2strata1` and `m2strata2`, or as a matrix in `stratamat`.  Arguments `m2strata1` and `m2strata2` accept vectors of the first- and second-event stratum membership for each recaptured individual, with only entries of `1, 2, 3, ...` accepted.  Alternatively, `stratamat` accepts a matrix in which each cell represents the number of recaptures for each combination of event 1 and event 2 strata, with rows corresponding to event 1 strata and columns corresponding to event 2 strata.
 
-In the example below, there were two strata in event 1 (with sample sizes of 284 and 199) and three strata in event 2, and 30 individuals were marked in stratum 1 of event 1 and were recaptured in stratum 1 of event 2. These tests yield strong evidence of incomplete mixing in the time between events and of unequal capture probabilities in the first event, but also no evidence of unequal capture probabilities in the second event.  Therefore, use of a simple Petersen-type estimator may be considered justified.
+In the example below, there were two strata in event 1 (with sample sizes of 284 and 199) and three strata in event 2, and 30 individuals were marked in stratum 1 of event 1 and were recaptured in stratum 1 of event 2. These tests yield strong evidence of incomplete mixing in the time between events and of unequal capture probabilities in the first event, but also no evidence of unequal capture probabilities in the second event.  Therefore, use of a simple Petersen-type estimator may be considered justified if closure is assumed.
 
 ```{r}
 mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
 consistencytest(n1=c(284,199), n2=c(347,3616,1489), stratamat=mat)
 ```
 
-Since the decision to use a simple Petersen-type estimator is based on a failure to reject, the power of the tests used must be considered.  The `powstrattest()` function uses simulation as well as Cohen's non-central $\chi^2$ method to calculate the power of the consistency tests, given anticipated values of sample sizes by strata and assumed movement probabilities.
+Since the decision to use a simple Petersen-type estimator is based on a failure to reject, the power of the tests used must be considered.  The `powconsistencytest()` function uses simulation as well as Cohen's non-central $\chi^2$ method to calculate the power of the consistency tests, given anticipated values of sample sizes by strata and assumed movement probabilities.
 
-The `pmat` argument is a matrix of assumed movement probabilities between strata, with rows corresponding to first-event strata and columns corresponding to second-event strata, with an additional column corresponding to the probability of NOT being recaptured in the second event.  Values are conditioned on row, that is, by first-event strata.  For example, A `pmat` with a first row equal to `(0.05, 0.1, 0.15, 0.7)` would imply a 5% chance that individuals captured in the first-event strata 1 will be recaptured in second-event strata 1, and a 70% chance that individuals captured in the first-event strata 1 will not be recaptured in event 2.
+The `pmat` argument is a matrix of assumed movement probabilities between strata, with rows corresponding to first-event strata and columns corresponding to second-event strata, with an additional column corresponding to the probability of NOT being recaptured in the second event.  Values are conditioned on row, that is, by first-event strata.  For example, a `pmat` with a first row equal to `(0.05, 0.1, 0.15, 0.7)` would imply a 5% chance that individuals captured in the first-event strata 1 will be recaptured in second-event strata 1, and a 70% chance that individuals captured in the first-event strata 1 will not be recaptured in event 2.
 
 Because of the row-wise scaling, specifying a row equal to `(0.05,0.1, 0.15, 0.7)` would be equivalent to that row having values `(1, 2, 3, 14)`.
 
@@ -156,9 +158,9 @@ mat <- matrix(c(1,2,3,10,3,2,1,10), nrow=2, ncol=4, byrow=TRUE)
 powconsistencytest(n1=c(100,200), n2=c(100,100,100), pmat=mat)
 ```
 
-### Complete Stratification
+### Testing the Need for Complete Stratification
 
-In the event that there is no movement observed between strata, or the population is stratified in such a way that there can be no movement between strata (such as by age or sex), a stratified estimator should be used.  The `strattest()` function provides a means of conducting the typical $\chi^2$ tests to investigate the necessity of a stratified estimator.
+In the event that there is no movement observed between strata, or the population is stratified in such a way that there can be no movement between strata (such as by age or sex), a stratified estimator may be needed.  The `strattest()` function provides a means of conducting the typical $\chi^2$ tests to investigate the necessity of a stratified estimator.
 
 Since strata membership remains the same in both events, usage is simpler, with `n1`, `n2`, and `m2` accepting vectors of first- and second-event sample sizes and recapture numbers by strata.  In the example below, there is strong evidence of unequal capture probabilities in the first event but not in the second, and very strong evidence of differences in respective stratum capture probabilities between the first and second events.
 
@@ -176,7 +178,7 @@ powstrattest(N=c(1000,2000), n1=c(100,200), n2=c(200,200))
 
 ## Partially and Completely Stratified Estimators
 
-If sampling is stratified in both sampling events and some movement exists between strata but mixing is incomplete in the time between events and capture probabilities are unequal in both events, a partially stratified (Darroch-type) estimator should be used.  The `NDarroch()` function provides a means for doing this, and argument usage is the same as that in `consistencytest()`.
+If sampling is stratified in both sampling events and some movement exists between strata but mixing is incomplete in the time between events and tests indicate unequal capture probabilities in both events, a partially stratified (Darroch-type) estimator should be used.  The `NDarroch()` function provides a means for doing this, and argument usage is the same as that in `consistencytest()`.
 
 The function returns abundance estimates and standard errors for each stratum in both sampling events, as well as an overall abundance estimate and standard error.
 

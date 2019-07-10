@@ -4,8 +4,8 @@
 \alias{n2RR}
 \title{Mark-Recapture Sample Size, Robson-Regier}
 \usage{
-n2RR(N, n1, conf = c(0.99, 0.95, 0.9, 0.85, 0.8, 0.75), acc = c(0.5, 0.25,
-  0.2, 0.15, 0.1, 0.05, 0.01))
+n2RR(N, n1, conf = c(0.99, 0.95, 0.9, 0.85, 0.8, 0.75), acc = c(0.5,
+  0.25, 0.2, 0.15, 0.1, 0.05, 0.01))
 }
 \arguments{
 \item{N}{The best guess at true abundance}
@@ -48,9 +48,6 @@ It is possible that the sample size - accuracy relationship will be better illus
 \examples{
 n2RR(N=1000, n1=100)
 }
-\author{
-Matt Tyers
-}
 \references{
 Robson, D. S., and H. A. Regier.  1964.  Sample size in Petersen
   mark-recapture experiments.  Transactions of the American FisheriesSociety
@@ -59,4 +56,6 @@ Robson, D. S., and H. A. Regier.  1964.  Sample size in Petersen
 \seealso{
 \link{plotn2sim}, \link{plotn1n2simmatrix}
 }
-
+\author{
+Matt Tyers
+}
