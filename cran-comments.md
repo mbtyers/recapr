@@ -4,6 +4,7 @@
 
 ## Test environments
 * local Windows 10 install, R 3.6.1
+* winbuilder, R-devel
 * ubuntu (on travis-ci)
 
 ## R CMD check results
