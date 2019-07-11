@@ -3,8 +3,8 @@
 * I have read and agree to all CRAN policies.
 
 ## Test environments
-* local Windows 7 install, R 3.3.1 and R-devel (3.4.0)
-* ubuntu 12.04 (on travis-ci)
+* local Windows 10 install, R 3.6.1
+* ubuntu (on travis-ci)
 
 ## R CMD check results
 * There were no ERRORs, WARNINGs, or NOTEs. 
