@@ -1,6 +1,6 @@
 #' Consistency Tests for the Abundance Estimator, Partial Stratification
 #' @description Conducts three chi-squared tests for the consistency of the
-#'   Petersen-type abundance estimator.  These tests provide explore evidence
+#'   Petersen-type abundance estimator.  These tests explore evidence
 #'   against the second traditional assumption of the Petersen mark-recapture
 #'   experiment: that equal capture probabilities exist in either the first or
 #'   second sampling event, or that complete mixing occurs between events.
@@ -34,6 +34,7 @@
 #'   1 strata and columns corresponding to event 2 strata.  May be used instead
 #'   of \code{m2strata1} and \code{m2strata2}.
 #' @param ... Additional arguments for \link[stats]{chisq.test}
+#' @note Naming conventions for the second and third tests are taken from SPAS (see reference)
 #' @note Any Petersen-type estimator (such as this) depends on a set of
 #'   assumptions: \itemize{ \item  The population is closed; that is, that there
 #'   are no births, deaths, immigration, or emigration between sampling events
@@ -42,6 +43,10 @@
 #'   first event does not affect probability of recapture in the second event
 #'   \item Individuals do not lose marks between events \item All marks will be
 #'   reported in the second event }
+#' @references Stratified Population Analysis System (Arnason, A.N., C.W. Kirby, C.J. Schwarz
+#'  and J.R. Irvine. 1996. Computer Analysis of Data from Stratified Mark-Recovery Experiments
+#'  for Estimation of Salmon Escapements and Other Populations, Canadian Technical Report of
+#'  Fisheries and Aquatic Sciences 2106).
 #' @return A list of class \code{"recapr_consistencytest"} with the following components:
 #' \itemize{
 #' \item{\code{test1_tab}} {The contingency table used for the first test}
@@ -146,13 +151,13 @@ print.recapr_consistencytest <- function(x, ...) {
   print(x$test1_tab)
   cat('\n',"X-squared: ",x$test1_Xsqd,"  df: ",x$test1_df,"  p-val: ",x$test1_pval,'\n','\n')
 
-  cat("EQUAL PROPORTIONS TEST",'\n')
-  cat("H0: Equal probability of capture among n1 strata (all p_i equal)",'\n','\n')
+  cat("EQUAL PROPORTIONS TEST (SPAS terminology)",'\n')
+  cat("H0: Marked to unmarked ratio among recapture strata is constant (Sum_i a_i*theta_ij/U_j = k)",'\n','\n')
   print(x$test2_tab)
   cat('\n',"X-squared: ",x$test2_Xsqd,"  df: ",x$test2_df,"  p-val: ",x$test2_pval,'\n','\n')
 
-  cat("COMPLETE MIXING TEST",'\n')
-  cat("H0: Equal probability of recapture among n2 strata (all p_j equal)",'\n','\n')
+  cat("COMPLETE MIXING TEST (SPAS terminology)",'\n')
+  cat("H0: Probability of re-sighting a released animal is independent of its stratum of origin (Sum_i theta_ij*p_j = d)",'\n','\n')
   print(x$test3_tab)
   cat('\n',"X-squared: ",x$test3_Xsqd,"  df: ",x$test3_df,"  p-val: ",x$test3_pval,'\n','\n')
   # print(x=...)

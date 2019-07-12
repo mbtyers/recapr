@@ -140,7 +140,7 @@ For a simple Petersen-type estimator of abundance to be consistent, one of three
 
 The `consistencytest()` function is provided for the instance that sampling in both events is stratified in such a way that movement between strata may occur, such as spatial or temporal stratification.  The stratification used in events 1 and 2 do not need to be the same.  Arguments `n1` and `n2` accept vectors of sample sizes in each event by strata.  Recaptures of marked individuals can be specified in one of two ways: either as vectors of strata membership in `m2strata1` and `m2strata2`, or as a matrix in `stratamat`.  Arguments `m2strata1` and `m2strata2` accept vectors of the first- and second-event stratum membership for each recaptured individual, with only entries of `1, 2, 3, ...` accepted.  Alternatively, `stratamat` accepts a matrix in which each cell represents the number of recaptures for each combination of event 1 and event 2 strata, with rows corresponding to event 1 strata and columns corresponding to event 2 strata.
 
-In the example below, there were two strata in event 1 (with sample sizes of 284 and 199) and three strata in event 2, and 30 individuals were marked in stratum 1 of event 1 and were recaptured in stratum 1 of event 2. These tests yield strong evidence of incomplete mixing in the time between events and of unequal capture probabilities in the first event, but also no evidence of unequal capture probabilities in the second event.  Therefore, use of a simple Petersen-type estimator may be considered justified if closure is assumed.
+In the example below, there were two strata in event 1 (with sample sizes of 284 and 199) and three strata in event 2, and 30 individuals were marked in stratum 1 of event 1 and were recaptured in stratum 1 of event 2. These tests yield strong evidence of incomplete mixing in the time between events and of unequal marked to unmarked ratios among recapture strata, but also no evidence against the probability of re-sighting a released animal being independent of its stratum of origin.  Therefore, use of a simple Petersen-type estimator may be considered justified if closure is assumed.
 
 ```{r}
 mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
@@ -180,7 +180,7 @@ powstrattest(N=c(1000,2000), n1=c(100,200), n2=c(200,200))
 
 If sampling is stratified in both sampling events and some movement exists between strata but mixing is incomplete in the time between events and tests indicate unequal capture probabilities in both events, a partially stratified (Darroch-type) estimator should be used.  The `NDarroch()` function provides a means for doing this, and argument usage is the same as that in `consistencytest()`.
 
-The function returns abundance estimates and standard errors for each stratum in both sampling events, as well as an overall abundance estimate and standard error.
+The function returns abundance estimates and standard errors for each stratum in both sampling events, as well as an overall abundance estimate and standard error.  Implementation is currently using Darroch's method for calculations, and will not yet accept non-singular input matrices.
 
 ```{r}
 mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)

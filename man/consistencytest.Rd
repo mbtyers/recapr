@@ -50,7 +50,7 @@ A list of class \code{"recapr_consistencytest"} with the following components:
 }
 \description{
 Conducts three chi-squared tests for the consistency of the
-  Petersen-type abundance estimator.  These tests provide explore evidence
+  Petersen-type abundance estimator.  These tests explore evidence
   against the second traditional assumption of the Petersen mark-recapture
   experiment: that equal capture probabilities exist in either the first or
   second sampling event, or that complete mixing occurs between events.
@@ -69,6 +69,8 @@ Conducts three chi-squared tests for the consistency of the
   (such as by size or gender), use of \link{strattest} is recommended.
 }
 \note{
+Naming conventions for the second and third tests are taken from SPAS (see reference)
+
 Any Petersen-type estimator (such as this) depends on a set of
   assumptions: \itemize{ \item  The population is closed; that is, that there
   are no births, deaths, immigration, or emigration between sampling events
@@ -86,6 +88,12 @@ consistencytest(n1=c(15,12,6), n2=c(12,9,10,8),
 
 mat <- matrix(c(30,15,1,0,22,15), nrow=2, ncol=3, byrow=TRUE)
 consistencytest(n1=c(284,199), n2=c(347,3616,1489), stratamat=mat)
+}
+\references{
+Stratified Population Analysis System (Arnason, A.N., C.W. Kirby, C.J. Schwarz
+ and J.R. Irvine. 1996. Computer Analysis of Data from Stratified Mark-Recovery Experiments
+ for Estimation of Salmon Escapements and Other Populations, Canadian Technical Report of
+ Fisheries and Aquatic Sciences 2106).
 }
 \seealso{
 \link{strattest}, \link{NDarroch}

@@ -3,6 +3,7 @@
 #'
 #' Inputs are vectors of total event 1 and 2 sample sizes, and either vectors of event 1 and 2 strata corresponding to each recaptured individual, or a matrix of total number of recaptures for each combination of event 1 and event 2 strata.
 #'
+#' Implementation is currently using Darroch's method, and will not yet accept non-singular input matrices.
 #' @references Darroch, J.N. (1961). The two-sample capture-recapture census when tagging and sampling are stratified.  \emph{Biometrika} \strong{48}, 241-60.
 #' @return A numeric list, giving the strata matrix if originally given in vector form, abundance estimates and standard errors by event 1 and event 2 strata, and the total abundance estimate and standard error.
 #' @param n1counts A vector of the total sample sizes in the first event, by
@@ -55,6 +56,8 @@ NDarroch <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, stratam
   }
   mjdot <- colSums(stratamat)
   midot <- rowSums(stratamat)
+  f <- function(m) class(try(solve(m),silent=T))=="matrix"
+  if(!f(stratamat)) stop("movement matrix is non-invertable.") ###
   Minv <- ginv(stratamat)
   a <- n1counts
   u <- n2counts
@@ -64,8 +67,10 @@ NDarroch <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, stratam
   D_a <- diag(a)
   D_r <- diag(as.vector(rr))
   D_u <- diag(u)
+  if(!f(D_a)) stop("D_a matrix is non-invertable.") ###
   D_ainv <- ginv(D_a)
   thetahat <- D_ainv %*% M %*% D_r
+  if(!f(D_a)) stop("theta_hat matrix is non-invertable.") ###
   thetahatinv <- ginv(thetahat)
   Uhat <- D_u %*% rr
   Nhat <- Uhat + mjdot*rr

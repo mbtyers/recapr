@@ -36,6 +36,8 @@ A numeric list, giving the strata matrix if originally given in vector form, abu
 Computes abundance estimates and associated variance in the event of spatial or temporal stratification, or in any stratification in which individuals can move between strata.  Marking (event 1) and recapture (event 2) strata do not need to be the same.
 
 Inputs are vectors of total event 1 and 2 sample sizes, and either vectors of event 1 and 2 strata corresponding to each recaptured individual, or a matrix of total number of recaptures for each combination of event 1 and event 2 strata.
+
+Implementation is currently using Darroch's method, and will not yet accept non-singular input matrices.
 }
 \examples{
 mat <- matrix(c(59,30,1,45,280,38,0,42,25), nrow=3, ncol=3, byrow=TRUE)
