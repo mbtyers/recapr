@@ -2,7 +2,7 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/mbtyers/recapr.svg?branch=master)](https://travis-ci.org/mbtyers/recapr)
 
-### Estimating, Testing, and Simulating Abundance in a Mark-Recapture
+### Estimating, Testing, and Simulating Abundance in a Mark-Recapture Experiment
 
 Tools are provided for estimating, testing, and simulating abundance in a two-event (Petersen) mark-recapture experiment.  Functions are given to calculate the Petersen, Chapman, and Bailey estimators and associated variances.  However, the principal utility is a set of functions to simulate random draws from these estimators, and use these to conduct hypothesis tests and power calculations.  Additionally, a set of functions are provided for generating confidence intervals via bootstrapping.  Functions are also provided to test abundance estimator consistency under complete or partial stratification, and to calculate stratified or Darroch estimators.  Functions are also provided to calculate recommended sample sizes.
 
