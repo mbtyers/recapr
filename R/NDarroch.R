@@ -3,7 +3,7 @@
 #'
 #' Inputs are vectors of total event 1 and 2 sample sizes, and either vectors of event 1 and 2 strata corresponding to each recaptured individual, or a matrix of total number of recaptures for each combination of event 1 and event 2 strata.
 #'
-#' Implementation is currently using Darroch's method, and will not yet accept non-singular input matrices.
+#' Implementation is currently using Darroch's method, and will only accept non-singular input matrices.
 #' @references Darroch, J.N. (1961). The two-sample capture-recapture census when tagging and sampling are stratified.  \emph{Biometrika} \strong{48}, 241-60.
 #' @return A numeric list, giving the strata matrix if originally given in vector form, abundance estimates and standard errors by event 1 and event 2 strata, and the total abundance estimate and standard error.
 #' @param n1counts A vector of the total sample sizes in the first event, by
