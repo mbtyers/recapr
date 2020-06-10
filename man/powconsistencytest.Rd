@@ -4,8 +4,7 @@
 \alias{powconsistencytest}
 \title{Power of Consistency Tests, Partial Stratification}
 \usage{
-powconsistencytest(n1, n2, pmat, alpha = 0.05, sim = TRUE,
-  nsim = 10000)
+powconsistencytest(n1, n2, pmat, alpha = 0.05, sim = TRUE, nsim = 10000)
 }
 \arguments{
 \item{n1}{Vector of anticipated n1 counts (sample size in the first event),

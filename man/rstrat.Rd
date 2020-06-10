@@ -4,8 +4,15 @@
 \alias{rstrat}
 \title{Random Draws from the Stratified Estimator}
 \usage{
-rstrat(length, N, n1 = NULL, n2 = NULL, p1 = NULL, p2 = NULL,
-  estimator = "Chapman")
+rstrat(
+  length,
+  N,
+  n1 = NULL,
+  n2 = NULL,
+  p1 = NULL,
+  p2 = NULL,
+  estimator = "Chapman"
+)
 }
 \arguments{
 \item{length}{The length of the random vector to return.}

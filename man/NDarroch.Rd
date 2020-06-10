@@ -4,8 +4,13 @@
 \alias{NDarroch}
 \title{Spatially or Temporally Stratified Abundance Est (Darroch)}
 \usage{
-NDarroch(n1counts, n2counts, m2strata1 = NULL, m2strata2 = NULL,
-  stratamat = NULL)
+NDarroch(
+  n1counts,
+  n2counts,
+  m2strata1 = NULL,
+  m2strata2 = NULL,
+  stratamat = NULL
+)
 }
 \arguments{
 \item{n1counts}{A vector of the total sample sizes in the first event, by

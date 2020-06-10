@@ -4,8 +4,15 @@
 \alias{plotn1n2simmatrix}
 \title{Mark-Recapture Sample Size Via Sim, Both Samples}
 \usage{
-plotn1n2simmatrix(N, conf = 0.95, nrange = NULL, nstep = NULL,
-  estimator = "Chapman", nsim = 10000, ...)
+plotn1n2simmatrix(
+  N,
+  conf = 0.95,
+  nrange = NULL,
+  nstep = NULL,
+  estimator = "Chapman",
+  nsim = 10000,
+  ...
+)
 }
 \arguments{
 \item{N}{The best guess at true abundance}

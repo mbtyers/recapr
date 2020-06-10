@@ -4,9 +4,17 @@
 \alias{plotn2sim}
 \title{Mark-Recapture Sample Size Via Simulation}
 \usage{
-plotn2sim(N, n1, conf = c(0.99, 0.95, 0.85, 0.8, 0.75), n2range = NULL,
-  n2step = NULL, estimator = "Chapman", nsim = 10000, accrange = 1,
-  ...)
+plotn2sim(
+  N,
+  n1,
+  conf = c(0.99, 0.95, 0.85, 0.8, 0.75),
+  n2range = NULL,
+  n2step = NULL,
+  estimator = "Chapman",
+  nsim = 10000,
+  accrange = 1,
+  ...
+)
 }
 \arguments{
 \item{N}{The best guess at true abundance}

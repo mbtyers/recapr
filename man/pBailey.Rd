@@ -4,8 +4,15 @@
 \alias{pBailey}
 \title{Hypothesis Testing Using the Bailey Estimator}
 \usage{
-pBailey(estN = NULL, nullN, n1, n2, m2 = NULL, nsim = 1e+05,
-  alternative = "less")
+pBailey(
+  estN = NULL,
+  nullN,
+  n1,
+  n2,
+  m2 = NULL,
+  nsim = 1e+05,
+  alternative = "less"
+)
 }
 \arguments{
 \item{estN}{The estimated abundance.  Either this or the number of recaptures

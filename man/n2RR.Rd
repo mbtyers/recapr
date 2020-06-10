@@ -4,8 +4,12 @@
 \alias{n2RR}
 \title{Mark-Recapture Sample Size, Robson-Regier}
 \usage{
-n2RR(N, n1, conf = c(0.99, 0.95, 0.9, 0.85, 0.8, 0.75), acc = c(0.5,
-  0.25, 0.2, 0.15, 0.1, 0.05, 0.01))
+n2RR(
+  N,
+  n1,
+  conf = c(0.99, 0.95, 0.9, 0.85, 0.8, 0.75),
+  acc = c(0.5, 0.25, 0.2, 0.15, 0.1, 0.05, 0.01)
+)
 }
 \arguments{
 \item{N}{The best guess at true abundance}

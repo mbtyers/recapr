@@ -56,7 +56,7 @@ NDarroch <- function(n1counts, n2counts, m2strata1=NULL, m2strata2=NULL, stratam
   }
   mjdot <- colSums(stratamat)
   midot <- rowSums(stratamat)
-  f <- function(m) class(try(solve(m),silent=TRUE))=="matrix"
+  f <- function(m) "matrix" %in% class(try(solve(m),silent=TRUE))
   if(!f(stratamat)) stop("movement matrix is non-invertable.") ###
   Minv <- ginv(stratamat)
   a <- n1counts

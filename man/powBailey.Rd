@@ -4,8 +4,15 @@
 \alias{powBailey}
 \title{Power for Hypothesis Testing Using the Bailey Estimator}
 \usage{
-powBailey(nullN, trueN, n1, n2, alpha = 0.05, nsim = 10000,
-  alternative = "less")
+powBailey(
+  nullN,
+  trueN,
+  n1,
+  n2,
+  alpha = 0.05,
+  nsim = 10000,
+  alternative = "less"
+)
 }
 \arguments{
 \item{nullN}{The abundance given by the null hypothesis}

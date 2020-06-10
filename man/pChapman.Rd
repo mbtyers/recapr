@@ -4,8 +4,15 @@
 \alias{pChapman}
 \title{Hypothesis Testing Using the Chapman Estimator}
 \usage{
-pChapman(estN = NULL, nullN, n1, n2, m2 = NULL, nsim = 1e+05,
-  alternative = "less")
+pChapman(
+  estN = NULL,
+  nullN,
+  n1,
+  n2,
+  m2 = NULL,
+  nsim = 1e+05,
+  alternative = "less"
+)
 }
 \arguments{
 \item{estN}{The estimated abundance.  Either this or the number of recaptures

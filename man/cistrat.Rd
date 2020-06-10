@@ -4,8 +4,16 @@
 \alias{cistrat}
 \title{Confidence Intervals for the Stratified Estimator}
 \usage{
-cistrat(n1, n2, m2, conf = 0.95, method = "both", bootreps = 10000,
-  estimator = "Chapman", useChapvar = FALSE)
+cistrat(
+  n1,
+  n2,
+  m2,
+  conf = 0.95,
+  method = "both",
+  bootreps = 10000,
+  estimator = "Chapman",
+  useChapvar = FALSE
+)
 }
 \arguments{
 \item{n1}{Number of individuals captured and marked in the first sample}
