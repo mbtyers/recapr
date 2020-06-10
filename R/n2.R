@@ -41,7 +41,7 @@ n2RR <- function(N, n1, conf=c(0.99,0.95,0.9,0.85,0.8,0.75),acc=c(0.5,0.25,0.2,0
   acc <- acc[acc %in% accall]
   if(length(acc)==0) stop("invalid acc")
   if(length(conf)==0) stop("invalid conf")
-  acc <- sort(acc,decreasing=T)
+  acc <- sort(acc,decreasing=TRUE)
   for(i in 1:length(conf)) {
     Draw <- (conf[i]==0.99)*c(48.707,135.529229,196.2951017,325.8179089,694.4679116,2684.858928,66380.75202) +
       (conf[i]==0.95)*c(24.35001031,69.83385388,103.9898307,178.3155987,391.4504252,1543.721381,38421.81) +
@@ -109,7 +109,7 @@ plotn2sim <- function(N, n1, conf=c(0.99,0.95,0.85,0.8,0.75),n2range=NULL,n2step
   if(length(n2range)!=2) stop("n2range must have two elements (min and max n2 to plot)")
   whichn2 <- seq(n2range[1],n2range[2],by=n2step)
   if(sum(conf %in% c(0.99,0.95,0.85,0.8,0.75)) < 1) stop("invalid conf")
-  conftry <- sort(conf[conf %in% c(0.99,0.95,0.85,0.8,0.75)],decreasing=T)
+  conftry <- sort(conf[conf %in% c(0.99,0.95,0.85,0.8,0.75)],decreasing=TRUE)
   accsimcalc <- matrix(NA,nrow=length(whichn2),ncol=(2*length(conftry)+1))
   accsimcalc[,1] <- whichn2
   i <- 1
@@ -196,7 +196,7 @@ plotn1n2simmatrix <- function(N,conf=0.95,nrange=NULL,nstep=NULL,estimator="Chap
       if(estimator=="Chapman") Nhat <- rChapman(length=nsim,N=N,n1=n1[i],n2=n2[j])
       if(estimator=="Petersen") Nhat <- rPetersen(length=nsim,N=N,n1=n1[i],n2=n2[j])
       if(estimator=="Bailey") Nhat <- rBailey(length=nsim,N=N,n1=n1[i],n2=n2[j])
-      quantilesN <- quantile(Nhat,c((1-conf)/2,(1+conf)/2),na.rm=T)
+      quantilesN <- quantile(Nhat,c((1-conf)/2,(1+conf)/2),na.rm=TRUE)
       quantilesRP <- (quantilesN-N)/N
       simacc[i,j] <- max(abs(quantilesRP))
     }

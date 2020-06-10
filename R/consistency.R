@@ -258,8 +258,8 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   nstrata1 <- length(n1)
   nstrata2 <- length(n2)
 
-  mvtmat_rowcond <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)         # stratum 1->2 movement probabilities (conditional on row)
-  mvtmat_expected <- mvtmat_rowcond*matrix(n1,nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)         # stratum 1->2 expected counts
+  mvtmat_rowcond <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=FALSE)         # stratum 1->2 movement probabilities (conditional on row)
+  mvtmat_expected <- mvtmat_rowcond*matrix(n1,nrow=nrow(pmat),ncol=ncol(pmat),byrow=FALSE)         # stratum 1->2 expected counts
   probmat_expected <- rbind(mvtmat_expected,c((n2-colSums(mvtmat_expected[,1:length(n2)])),0)) # expected counts for all outcomes (except for not captured in either event)
   # probmat_expected[nrow(probmat_expected),ncol(probmat_expected)] <- N-sum(probmat_expected)
   # probmat_all <- probmat_expected/sum(probmat_expected)
@@ -280,18 +280,18 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   #
   #   probs_all <- as.vector(probmat_all)
 
-  # probmat_mvt <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)                  # stratum 1->2 movement probabilities (conditional on row)
+  # probmat_mvt <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=FALSE)                  # stratum 1->2 movement probabilities (conditional on row)
   # p1not <- 1-(sum(n1)/sum(N1))
   # p2not <- 1-(sum(n2)/sum(N2))
   # probmat_mvtall <- cbind(probmat_mvt*(1-p1not),rep(p1not,nstrata1))
-  # expected_mvt <- probmat_mvtall*matrix(n1,nrow=nstrata1,ncol=(nstrata2+1),byrow=F)
+  # expected_mvt <- probmat_mvtall*matrix(n1,nrow=nstrata1,ncol=(nstrata2+1),byrow=FALSE)
 
   # pboth <- sum(p1)*sum(p2)
   # probmat_both <- pmat/sum(pmat)*pboth
 
-  # probmat_mvt <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)                  # stratum 1->2 movement probabilities (conditional on row)
-  # probmat_mvtall <- cbind((probmat_mvt*matrix(p1,nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)),(1-p1))   # stratum 1->2 movement probabilities, including not recaptured (conditional on row)
-  # probmat_both_m2 <- probmat_mvt*matrix(pN1*p1/sum(p1_crossclass),nrow=nrow(pmat),ncol=ncol(pmat),byrow=F)                    # total cross-classification probabilities (conditional on capture-recapture)
+  # probmat_mvt <- pmat/matrix(rowSums(pmat),nrow=nrow(pmat),ncol=ncol(pmat),byrow=FALSE)                  # stratum 1->2 movement probabilities (conditional on row)
+  # probmat_mvtall <- cbind((probmat_mvt*matrix(p1,nrow=nrow(pmat),ncol=ncol(pmat),byrow=FALSE)),(1-p1))   # stratum 1->2 movement probabilities, including not recaptured (conditional on row)
+  # probmat_both_m2 <- probmat_mvt*matrix(pN1*p1/sum(p1_crossclass),nrow=nrow(pmat),ncol=ncol(pmat),byrow=FALSE)                    # total cross-classification probabilities (conditional on capture-recapture)
   # probmat_both <- probmat_both_m2*pboth                   # total cross-classification probabilities
 
   # probmat_all <- rbind(cbind(probmat_both,p1-rowSums(probmat_both)),c(p2-colSums(probmat_both),((1-sum(p1))*(1-sum(p2)))))
@@ -309,14 +309,14 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   probmat_mixing <- probmat_expected[1:nstrata1,]/sum(probmat_expected[1:nstrata1,])
   probmat_mixingnull <- rowSums(probmat_mixing) %*% t(colSums(probmat_mixing))
   w1 <- sqrt(sum((probmat_mixing - probmat_mixingnull)^2/probmat_mixingnull))
-  pwr1_c <- pchisq(q=qchisq(alpha,df=(nstrata1-1)*nstrata2,lower.tail=F),df=(nstrata1-1)*nstrata2,ncp=(sum(n2)*(w1^2)),lower.tail=F)
+  pwr1_c <- pchisq(q=qchisq(alpha,df=(nstrata1-1)*nstrata2,lower.tail=FALSE),df=(nstrata1-1)*nstrata2,ncp=(sum(n2)*(w1^2)),lower.tail=FALSE)
 
   # Equal proportions test - Cohen
   p1a <- rbind(colSums(probmat_expected[1:nstrata1,1:nstrata2]),probmat_expected[(nstrata1+1),1:nstrata2])
   p1a <- p1a/sum(p1a)
   p1anull <- rowSums(p1a) %*% t(colSums(p1a))
   w2 <- sqrt(sum((p1a - p1anull)^2/p1anull))
-  pwr2_c <- pchisq(q=qchisq(alpha,df=(nstrata2-1),lower.tail=F),df=(nstrata2-1),ncp=(sum(n2)*(w2^2)),lower.tail=F)
+  pwr2_c <- pchisq(q=qchisq(alpha,df=(nstrata2-1),lower.tail=FALSE),df=(nstrata2-1),ncp=(sum(n2)*(w2^2)),lower.tail=FALSE)
 
 
   # complete mixing test - Cohen
@@ -324,7 +324,7 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   p2a <- p2a/sum(p2a)
   p2anull <- rowSums(p2a) %*% t(colSums(p2a))
   w3 <- sqrt(sum((p2a - p2anull)^2/p2anull))
-  pwr3_c <- pchisq(q=qchisq(alpha,df=(nstrata1-1),lower.tail=F),df=(nstrata1-1),ncp=(sum(n1)*(w3^2)),lower.tail=F)
+  pwr3_c <- pchisq(q=qchisq(alpha,df=(nstrata1-1),lower.tail=FALSE),df=(nstrata1-1),ncp=(sum(n1)*(w3^2)),lower.tail=FALSE)
 
   # simulation   ------------ figure out a more efficient way to do this!
   # reject1 <- reject2 <- reject3 <- rep(NA,nsim)
@@ -344,9 +344,9 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   #   suppressWarnings(reject3[i] <- chisq.test(test3mat)$p.value<alpha)
   # }
 
-  # pwr1_sim <- mean(reject1,na.rm=T)
-  # pwr2_sim <- mean(reject2,na.rm=T)
-  # pwr3_sim <- mean(reject3,na.rm=T)
+  # pwr1_sim <- mean(reject1,na.rm=TRUE)
+  # pwr2_sim <- mean(reject2,na.rm=TRUE)
+  # pwr3_sim <- mean(reject3,na.rm=TRUE)
 
   if(sim) {
     simmat1 <- rmultinom(n=nsim,size=sum(n1),prob=as.vector(probmat_mixing))
@@ -360,7 +360,7 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
       }
     }
     X2_1 <- colSums(((simmat1-expmat1)^2)/expmat1)
-    pwr1_sim2 <- mean(pchisq(X2_1,df=(nstrata1-1)*nstrata2,lower.tail=F)<alpha,na.rm=T)
+    pwr1_sim2 <- mean(pchisq(X2_1,df=(nstrata1-1)*nstrata2,lower.tail=FALSE)<alpha,na.rm=TRUE)
 
     simmat2 <- rmultinom(n=nsim,size=sum(n2),prob=as.vector(p1a))
     ids <- expand.grid(1:2,1:nstrata2)
@@ -373,7 +373,7 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
       }
     }
     X2_2 <- colSums(((simmat2-expmat2)^2)/expmat2)
-    pwr2_sim2 <- mean(pchisq(X2_2,df=(nstrata2-1),lower.tail=F)<alpha,na.rm=T)
+    pwr2_sim2 <- mean(pchisq(X2_2,df=(nstrata2-1),lower.tail=FALSE)<alpha,na.rm=TRUE)
 
     simmat3 <- rmultinom(n=nsim,size=sum(n1),prob=as.vector(p2a))
     ids <- expand.grid(1:2,1:nstrata1)
@@ -386,7 +386,7 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
       }
     }
     X2_3 <- colSums(((simmat3-expmat3)^2)/expmat3)
-    pwr3_sim2 <- mean(pchisq(X2_3,df=(nstrata1-1),lower.tail=F)<alpha,na.rm=T)
+    pwr3_sim2 <- mean(pchisq(X2_3,df=(nstrata1-1),lower.tail=FALSE)<alpha,na.rm=TRUE)
   }
 
   rownames(probmat_mixing) <- rownames(probmat_mixingnull) <- 1:nstrata1
@@ -405,7 +405,7 @@ powconsistencytest <- function(n1,n2,pmat,alpha=0.05,sim=TRUE,nsim=10000) {
   # return(list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim,pwr1_sim2=pwr1_sim2,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim,pwr2_sim2=pwr2_sim2,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim,pwr3_sim2=pwr3_sim2))
   # return(list(pwr1_c=pwr1_c,pwr1_sim=pwr1_sim,pwr2_c=pwr2_c,pwr2_sim=pwr2_sim,pwr3_c=pwr3_c,pwr3_sim=pwr3_sim))
 }
-mat <- matrix(c(1,2,3,204,2,3,2,11,2,3,2,13),nrow=3,byrow=T)
+mat <- matrix(c(1,2,3,204,2,3,2,11,2,3,2,13),nrow=3,byrow=TRUE)
 powconsistencytest(pmat=mat,n1=c(12,20,18),n2=c(10,15,12),nsim=10000)
 
 
@@ -649,11 +649,11 @@ powstrattest <- function(N,n1,n2,alpha=0.05,sim=TRUE,nsim=100000) {
 
   # effect sizes and power calculations
   w1 <- sqrt(sum((p1a - p1anull)^2/p1anull))
-  pwr1_c <- pchisq(q=qchisq(alpha,df=(nstrata-1),lower.tail=F),df=(nstrata-1),ncp=(sum(n2)*(w1^2)),lower.tail=F)
+  pwr1_c <- pchisq(q=qchisq(alpha,df=(nstrata-1),lower.tail=FALSE),df=(nstrata-1),ncp=(sum(n2)*(w1^2)),lower.tail=FALSE)
   w2 <- sqrt(sum((p2a - p2anull)^2/p2anull))
-  pwr2_c <- pchisq(q=qchisq(alpha,df=(nstrata-1),lower.tail=F),df=(nstrata-1),ncp=(sum(n1)*(w2^2)),lower.tail=F)
+  pwr2_c <- pchisq(q=qchisq(alpha,df=(nstrata-1),lower.tail=FALSE),df=(nstrata-1),ncp=(sum(n1)*(w2^2)),lower.tail=FALSE)
   w3 <- sqrt(sum((p3a - p3anull)^2/p3anull))
-  pwr3_c <- pchisq(q=qchisq(alpha,df=(nstrata-1),lower.tail=F),df=(nstrata-1),ncp=(sum(n1+n2)*(w3^2)),lower.tail=F)
+  pwr3_c <- pchisq(q=qchisq(alpha,df=(nstrata-1),lower.tail=FALSE),df=(nstrata-1),ncp=(sum(n1+n2)*(w3^2)),lower.tail=FALSE)
 
   # ------------ Simulation ------------- #
   n1sim <- n2sim <- m2sim <- matrix(NA,nrow=nsim,ncol=nstrata)
@@ -674,23 +674,23 @@ powstrattest <- function(N,n1,n2,alpha=0.05,sim=TRUE,nsim=100000) {
   m2expect1 <- m2tot*n2sim/n2tot
   unmarkedexpect <- unmarkedtot*n2sim/n2tot
   X2_1 <- rowSums((((m2sim-m2expect1)^2)/m2expect1)+(((unmarked-unmarkedexpect)^2)/unmarkedexpect))
-  chi_p1 <- pchisq(q=X2_1,df=(nstrata-1),lower.tail=F)
+  chi_p1 <- pchisq(q=X2_1,df=(nstrata-1),lower.tail=FALSE)
 
   m2expect2 <- m2tot*n1sim/n1tot
   notrecapexpect <- notrecaptot*n1sim/n1tot
   X2_2 <- rowSums((((m2sim-m2expect2)^2)/m2expect2)+(((notrecap-notrecapexpect)^2)/notrecapexpect))
-  chi_p2 <- pchisq(q=X2_2,df=(nstrata-1),lower.tail=F)
+  chi_p2 <- pchisq(q=X2_2,df=(nstrata-1),lower.tail=FALSE)
 
   nallsim <- n1sim+n2sim
   nalltot <- n1tot+n2tot
   n1expect <- nallsim*n1tot/nalltot
   n2expect <- nallsim*n2tot/nalltot
   X2_3 <- rowSums((((n1sim-n1expect)^2)/n1expect)+(((n2sim-n2expect)^2)/n2expect))
-  chi_p3 <- pchisq(q=X2_3,df=(nstrata-1),lower.tail=F)
+  chi_p3 <- pchisq(q=X2_3,df=(nstrata-1),lower.tail=FALSE)
 
-  pwr1_sim <- mean(chi_p1<=alpha,na.rm=T)
-  pwr2_sim <- mean(chi_p2<=alpha,na.rm=T)
-  pwr3_sim <- mean(chi_p3<=alpha,na.rm=T)
+  pwr1_sim <- mean(chi_p1<=alpha,na.rm=TRUE)
+  pwr2_sim <- mean(chi_p2<=alpha,na.rm=TRUE)
+  pwr3_sim <- mean(chi_p3<=alpha,na.rm=TRUE)
 
   # ------------- output ------------- #
   Test1 <- list(test="First-event capture probabilities",prob=p1,prob_null=p1null,n=sum(n2),alpha=alpha,power=pwr1_c)

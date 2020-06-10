@@ -55,7 +55,7 @@ ciPetersen <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000,useC
   if(method=="boot" | method=="both") {
     m2boot <- rbinom(bootreps,size=n2,prob=(m2/n2))
     Nhatboot <- NPetersen(n1,n2,m2boot)
-    out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=T))
+    out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=TRUE))
   }
   return(out)
 }
@@ -115,7 +115,7 @@ ciChapman <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000) {
   if(method=="boot" | method=="both") {
     m2boot <- rbinom(bootreps,size=n2,prob=(m2/n2))
     Nhatboot <- NChapman(n1,n2,m2boot)
-    out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=T))
+    out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=TRUE))
   }
   # m2 normal
   # sem2 <- sqrt(n1*n2/out$Nhat*(1-(n1/out$Nhat))*((out$Nhat-n2)/(out$Nhat-1)))
@@ -181,7 +181,7 @@ ciBailey <- function(n1, n2, m2, conf=0.95, method="both", bootreps=10000) {
   if(method=="boot" | method=="both") {
     m2boot <- rbinom(bootreps,size=n2,prob=(m2/n2))
     Nhatboot <- NBailey(n1,n2,m2boot)
-    out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=T))
+    out$ciBoot <- unname(quantile(Nhatboot,bounds,na.rm=TRUE))
   }
   return(out)
 }

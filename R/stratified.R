@@ -279,7 +279,7 @@ cistrat <- function(n1,n2,m2,conf=0.95, method="both", bootreps=10000, estimator
       if(estimator=="Petersen") Nhatboot <- Nhatboot + NPetersen(n1=n1[i],n2=n2[i],m2=m2boot)
     }
     #Nhatboot <- Nhatboot +(out$Nstrat-mean(Nhatboot))    # trying to bootstrap-unbias it
-    out$ciBoot_strat <- unname(quantile(Nhatboot,bounds,na.rm=T))
+    out$ciBoot_strat <- unname(quantile(Nhatboot,bounds,na.rm=TRUE))
     #out$bootmean <- mean(Nhatboot)
   }
   return(out)
@@ -357,10 +357,10 @@ cistrat <- function(n1,n2,m2,conf=0.95, method="both", bootreps=10000, estimator
 #       Nhat_median[k] <- asdf$Nhat_medunb
 #       Nhathat[k] <- NChapman(n1=sum(n11[i],n12[i]),n2=sum(n21[j],n22[j]),m2=sum(c(m21[k],m22[k])))
 #     }
-#     Bhat[i,j] <- mean(Nhat,na.rm=T)-sum(N)
-#     Bhat_mean[i,j] <- mean(Nhat_mean,na.rm=T)-sum(N)
-#     Bhat_median[i,j] <- mean(Nhat_median,na.rm=T)-sum(N)
-#     Bhathat[i,j] <- mean(Nhathat,na.rm=T)-sum(N)
+#     Bhat[i,j] <- mean(Nhat,na.rm=TRUE)-sum(N)
+#     Bhat_mean[i,j] <- mean(Nhat_mean,na.rm=TRUE)-sum(N)
+#     Bhat_median[i,j] <- mean(Nhat_median,na.rm=TRUE)-sum(N)
+#     Bhathat[i,j] <- mean(Nhathat,na.rm=TRUE)-sum(N)
 #   }
 #   print(i)
 # }
@@ -395,10 +395,10 @@ cistrat <- function(n1,n2,m2,conf=0.95, method="both", bootreps=10000, estimator
 #       Nhat_median[k] <- asdf$Nhat_medunb
 #       Nhathat[k] <- NChapman(n1=sum(n11[i],n21[j]),n2=sum(n12[i],n22[j]),m2=sum(c(m12[k],m22[k])))
 #     }
-#     Bhat[i,j] <- mean(Nhat,na.rm=T)-(N1[i]+N2[j])#sum(N)
-#     Bhat_mean[i,j] <- mean(Nhat_mean,na.rm=T)-(N1[i]+N2[j])#sum(N)
-#     Bhat_median[i,j] <- mean(Nhat_median,na.rm=T)-(N1[i]+N2[j])#sum(N)
-#     Bhathat[i,j] <- mean(Nhathat,na.rm=T)-(N1[i]+N2[j])#sum(N)
+#     Bhat[i,j] <- mean(Nhat,na.rm=TRUE)-(N1[i]+N2[j])#sum(N)
+#     Bhat_mean[i,j] <- mean(Nhat_mean,na.rm=TRUE)-(N1[i]+N2[j])#sum(N)
+#     Bhat_median[i,j] <- mean(Nhat_median,na.rm=TRUE)-(N1[i]+N2[j])#sum(N)
+#     Bhathat[i,j] <- mean(Nhathat,na.rm=TRUE)-(N1[i]+N2[j])#sum(N)
 #   }
 #   print(i)
 # }
@@ -432,7 +432,7 @@ cistrat <- function(n1,n2,m2,conf=0.95, method="both", bootreps=10000, estimator
 #   Nhathat[k] <- NChapman(n1=sum(n11,n21),n2=sum(n12,n22),m2=sum(c(m21[k],m22[k])))
 #   if(20*k/nsim==floor(20*k/nsim)) cat(100*k/nsim,"% ... ")
 # }
-# mean(Nhat,na.rm=T)-(N1+N2)#(N1[i]+N2[j])#sum(N)
-# mean(Nhat_mean,na.rm=T)-(N1+N2)#(N1[i]+N2[j])#sum(N)
-# mean(Nhat_median,na.rm=T)-(N1+N2)#(N1[i]+N2[j])#sum(N)
-# mean(Nhathat,na.rm=T)-(N1+N2)#(N1[i]+N2[j])#sum(N)
+# mean(Nhat,na.rm=TRUE)-(N1+N2)#(N1[i]+N2[j])#sum(N)
+# mean(Nhat_mean,na.rm=TRUE)-(N1+N2)#(N1[i]+N2[j])#sum(N)
+# mean(Nhat_median,na.rm=TRUE)-(N1+N2)#(N1[i]+N2[j])#sum(N)
+# mean(Nhathat,na.rm=TRUE)-(N1+N2)#(N1[i]+N2[j])#sum(N)

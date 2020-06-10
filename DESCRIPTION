@@ -1,8 +1,8 @@
 Package: recapr
 Type: Package
 Title: Estimating, Testing, and Simulating Abundance in a Mark-Recapture Experiment
-Version: 0.4.0
-Date: 2019-07-10
+Version: 0.4.1
+Date: 2020-06-10
 Authors@R: person("Matt", "Tyers", email = "matt.tyers@alaska.gov", role = c("aut", "cre"))
 Description: Tools are provided for estimating, testing, and simulating
     abundance in a two-event (Petersen) mark-recapture experiment. Functions are
@@ -14,6 +14,14 @@ Description: Tools are provided for estimating, testing, and simulating
     provided to test abundance estimator consistency under complete or partial
     stratification, and to calculate stratified or partially stratified estimators.
     Functions are also provided to calculate recommended sample sizes.
+    Referenced methods:
+    Arnason et al. (1996) <ISSN:0706-6457>
+    Bailey (1951) <DOI:10.2307/2332575>
+    Bailey (1952) <DOI:10.2307/1913>
+    Chapman (1951) <NAID:20001644490>
+    Cohen (1988) <ISBN:0-12-179060-6>
+    Darroch (1961) <DOI:10.2307/2332748>
+    Robson and Regier (1964) <DOI:10.1577/1548-8659>
 License: GPL-2
 LazyData: TRUE
 Imports:
