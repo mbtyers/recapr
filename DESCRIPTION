@@ -1,6 +1,6 @@
 Package: recapr
 Type: Package
-Title: Estimating, Testing, and Simulating Abundance in a Mark-Recapture Experiment
+Title: Tools for a Two Event Mark-Recapture Experiment
 Version: 0.4.1
 Date: 2020-06-10
 Authors@R: person("Matt", "Tyers", email = "matt.tyers@alaska.gov", role = c("aut", "cre"))
