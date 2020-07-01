@@ -1,7 +1,7 @@
 Package: recapr
 Type: Package
 Title: Two Event Mark-Recapture Experiment
-Version: 0.4.2
+Version: 0.4.3
 Date: 2020-06-19
 Authors@R: person("Matt", "Tyers", email = "matt.tyers@alaska.gov", role = c("aut", "cre"))
 Description: Tools are provided for estimating, testing, and simulating
@@ -20,7 +20,7 @@ Description: Tools are provided for estimating, testing, and simulating
     Chapman (1951) NAID:20001644490, 
     Cohen (1988) ISBN:0-12-179060-6, 
     Darroch (1961) <DOI:10.2307/2332748>, and
-    Robson and Regier (1964) <DOI:10.1577/1548-8659>.
+    Robson and Regier (1964) <ISSN:1548-8659>.
 License: GPL-2
 LazyData: TRUE
 Imports:
