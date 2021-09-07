@@ -1,9 +1,9 @@
-## Updated submission
-* This is an update of my first submission of this package to CRAN.  All identified issues have been fixed.
+## Updated email
+* This is an update of a package currently on CRAN.  The only change is the contact email address.
 * I have read and agree to all CRAN policies.
 
 ## Test environments
-* local Windows 10 install, R 4.0.0
+* local Windows 10 install, R 4.1.0
 * winbuilder, R-devel
 * ubuntu (on travis-ci)
 

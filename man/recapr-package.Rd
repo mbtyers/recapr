@@ -13,14 +13,14 @@ Tools are provided for estimating, testing, and simulating abundance in a two-ev
 Package: \tab recapr\cr
 Type: \tab Package\cr
 Version: \tab 0.4.2\cr
-Date: \tab 2020-06-19\cr
+Date: \tab 2021-09-02\cr
 License: \tab GPL-2\cr
 }
 }
 \author{
 Matt Tyers
 
-Maintainer: Matt Tyers <matt.tyers@alaska.gov>
+Maintainer: Matt Tyers <matttyersstat@gmail.com>
 }
 
 
